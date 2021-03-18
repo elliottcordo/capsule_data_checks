@@ -1,0 +1,256 @@
+dim_facility_missing_nk:
+    label: "dim_facility_missing_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        with source as (
+            select distinct id as source_nk
+            from pharmakon.facility
+            where updated_at < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+        ), dim as (
+            select distinct facility_id as dim_nk
+            from capsule_dw.dim_facility
+        )
+        select source.*
+        from source
+        left join dim on source_nk=dim_nk
+        where source_nk is not null and dim_nk is null;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 101
+
+# dim_market_missing_nk:
+#     label: "dim_market_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct name_external as source_nk
+#             from pharmakon.market
+#             where created_at < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct market as dim_nk
+#             from capsule_dw.dim_market
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 101
+
+# dim_contact_method_missing_nk:
+#     label: "dim_contact_method_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct coalesce(type_of_communication_c::text, '')||coalesce(task_subtype::text, '') as source_nk
+#             from Salesforce.tasks
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct coalesce(method_name::text, '')||coalesce(method_type::text, '') as dim_nk
+#             from capsule_dw.dim_contact_method
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 5
+#     failure_threshold: 10
+
+# dim_dpm_missing_nk:
+#     label: "dim_dpm_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct id as source_nk
+#             from salesforce.users
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct sf_owner_id as dim_nk
+#             from capsule_dw.dim_dpm
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+
+# dim_dpm_goals_missing_nk:
+#     label: "dim_dpm_goals_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct coalesce(b.id::text, '')||coalesce(period_start_date_c::text, '') as source_nk
+#             from salesforce.sales_goals a
+#             join salesforce.users b on b.id=a.owner_id
+#             where a.last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct coalesce(sf_owner_id::text, '')||coalesce(goal_to_date::text, '') as dim_nk
+#             from capsule_dw.dim_dpm_goals
+#             join capsule_dw.dim_dpm using (dim_dpm_key)
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+
+# dim_practice_missing_nk:
+#     label: "dim_practice_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct id as source_nk
+#             from salesforce.accounts
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct sf_account_id as dim_nk
+#             from capsule_dw.dim_practice
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+
+# dim_provider_missing_nk:
+#     label: "dim_provider_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct npi_c as source_nk
+#             from salesforce.contacts
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct provider_npi as dim_nk
+#             from capsule_dw.dim_provider
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+
+# dim_territory_missing_nk:
+#     label: "dim_territory_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct x2019_territory_c as source_nk
+#             from salesforce.contacts
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#         ), dim as (
+#             select distinct territory as dim_nk
+#             from capsule_dw.dim_territory
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+
+
+# fact_provider_missing_nk:
+#     label: "fact_provider_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct npi_c as source_nk
+#             from salesforce.contacts
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#                 and is_deleted!=true
+#         ), dim as (
+#             select distinct provider_npi as dim_nk
+#             from capsule_dw.fact_provider
+#             join capsule_dw.dim_provider using (dim_provider_key)
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+
+# fact_provider_comm_missing_nk:
+#     label: "fact_provider_comm_missing_nk"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: >
+
+#         with source as (
+#             select distinct id as source_nk
+#             from Salesforce.tasks
+#             where last_modified_date < dateadd(HOUR, -3, convert_timezone('EST', getdate()))
+#                 and is_deleted!=true
+#         ), dim as (
+#             select distinct __sf_task_id as dim_nk
+#             from capsule_dw.fact_provider_comm
+#         )
+#         select source.*
+#         from source
+#         left join dim on source_nk=dim_nk
+#         where source_nk is not null and dim_nk is null;
+
+#     conn_b: "capsule-dw"
+#     script_b: "select 1 where 1=0;"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 10
+

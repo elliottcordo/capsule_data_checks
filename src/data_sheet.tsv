@@ -1,0 +1,617 @@
+grp	Type	Target Table	Target Attribute	sort	Target Key	Target Description	Target Comments	Calculated?	Source Table	Source Column	Source Event Service	Source Event Column	Ques to Svc	Report Need	Event ODS Table	Event ODS Column
+1	Dimension	dim_address (practice billing)	dim_address_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_address (practice billing)	city	3	Natural Key	City			salesforce.accounts	shipping_city			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice billing)	state	3	Natural Key	State			salesforce.accounts	shipping_state			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice billing)	street_one	3	Natural Key	Street 1			salesforce.accounts	shipping_street			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice billing)	zip	3	Natural Key	Zip			salesforce.accounts	shipping_postal_code			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice billing)	created_at	5	Event Timestamp	created timestamp			salesforce.accounts	last_modified_date						
+1	Dimension	dim_address (practice billing)	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_address (practice billing)	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_address (practice shipping)	dim_address_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_address (practice shipping)	city	3	Natural Key	City			salesforce.accounts	billing_city			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice shipping)	state	3	Natural Key	State			salesforce.accounts	billing_state			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice shipping)	street_one	3	Natural Key	Street 1			salesforce.accounts	billing_street			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice shipping)	zip	3	Natural Key	Zip			salesforce.accounts	billing_postal_code			Plan to add in future for practice	Yes		
+1	Dimension	dim_address (practice shipping)	created_at	5	Event Timestamp	created timestamp			salesforce.accounts	last_modified_date						
+1	Dimension	dim_address (practice shipping)	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_address (practice shipping)	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_address (provider)	dim_address_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_address (provider)	city	3	Natural Key	City			salesforce.contacts	mailing_city	JSON - provider	city	Plan to add in future for practice	Yes		
+1	Dimension	dim_address (provider)	state	3	Natural Key	State			salesforce.contacts	mailing_state	JSON - provider	state	Plan to add in future for practice	Yes		
+1	Dimension	dim_address (provider)	street_one	3	Natural Key	Street 1			salesforce.contacts	mailing_street	JSON - provider	street_one	Plan to add in future for practice	Yes		
+1	Dimension	dim_address (provider)	street_two	3	Natural Key	Street 2					JSON - provider	street_two	Plan to add in future for practice	Yes		
+1	Dimension	dim_address (provider)	zip	3	Natural Key	Zip			salesforce.contacts	mailing_postal_code	JSON - provider	zip_code	Plan to add in future for practice	Yes		
+1	Dimension	dim_address (provider)	created_at	5	Event Timestamp	created timestamp			salesforce.contacts	last_modified_date	JSON - provider	event time				
+1	Dimension	dim_address (provider)	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_address (provider)	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_contact_method	dim_contact_method_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_contact_method	method_name	3	Natural Key	Method name i.e., email/text			Salesforce.tasks	type_of_communication_c			Payload v2	Yes		
+1	Dimension	dim_contact_method	method_type	3	Natural Key	Method type i.e., call			Salesforce.tasks	task_subtype			Payload v2	Yes		
+1	Dimension	dim_contact_method	created_at	5	Event Timestamp	created timestamp			Salesforce.tasks	last_modified_date						
+1	Dimension	dim_contact_method	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_contact_method	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_contact_type	dim_contact_type_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_contact_type	contact_type	3	Natural Key	Contact name i.e., marketing, sales			Various, if salesforce.task then 'marketing/sales', if Kustomr then 'outreach'	Based on source name				Yes		
+1	Dimension	dim_contact_type	contact_name	3	Natural Key	Contact type i.e., monthly sales			Various, if salesforce.task then 'monthly sales', if Kustomr then 'provider experience'	Based on source name				Yes		
+1	Dimension	dim_contact_type	created_at	5	Event Timestamp	created timestamp			Salesforce.tasks	last_modified_date						
+1	Dimension	dim_contact_type	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_contact_type	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_dpm	dim_dpm_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_dpm	sf_owner_id	3	Natural Key	DPM id			salesforce.users	id			Payload v2			
+1	Dimension	dim_dpm	dpm_first_name	4	Type2	DPM first name			salesforce.users	first_name			Payload v3	Yes		
+1	Dimension	dim_dpm	dpm_last_name	4	Type2	DPM last name			salesforce.users	last_name			Payload v3	Yes		
+1	Dimension	dim_dpm	created_at	5	Event Timestamp	created timestamp			salesforce.users	last_modified_date						
+1	Dimension	dim_dpm	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_dpm	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_dpm_goals	dim_dpm_goals_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_dpm_goals	dim_dpm_key	2	Foreign Key	FK	dim_dpm									
+1	Dimension	dim_dpm_goals	sf_owner_id	3	Natural Key	DPM id			salesforce.users	id			Payload v2			
+1	Dimension	dim_dpm_goals	goal_to_date	3	Natural Key	period_start_date_c			salesforce.sales_goals	period_start_date_c			Not associated with Contact or Owner in SF but a report. Not included in V2 or V3	Yes		
+1	Dimension	dim_dpm_goals	base_goal	4	Type2	base_goal_c			salesforce.sales_goals	base_goal_c			Not associated with Contact or Owner in SF but a report. Not included in V2 or V4	Yes, but ask to SF if still being used?		
+1	Dimension	dim_dpm_goals	new_goal	4	Type2	new_goal_c			salesforce.sales_goals	new_goal_c			Not associated with Contact or Owner in SF but a report. Not included in V2 or V5	Yes, but ask to SF if still being used?		
+1	Dimension	dim_dpm_goals	total_goal	4	Type2	total_goal_c			salesforce.sales_goals	total_goal_c			Not associated with Contact or Owner in SF but a report. Not included in V2 or V6	Yes		
+1	Dimension	dim_dpm_goals	created_at	5	Event Timestamp	created timestamp			salesforce.users, salesforce.sales_goals	max of last_modified_date						
+1	Dimension	dim_dpm_goals	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_dpm_goals	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_facility	dim_facility_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_facility	dim_market_key	2	Foreign Key	FK	dim_market									
+1	Dimension	dim_facility	facility_id	3	Natural key	facility id			pharmakon.facility	id						
+1	Dimension	dim_facility	code	4	Type2	Capsule code			pharmakon.facility	code				Yes		
+1	Dimension	dim_facility	jurisdiction	4	Type2	state			pharmakon.facility	jurisdiction						
+1	Dimension	dim_facility	name_external	4	Type2	external name in CapOS			pharmakon.facility	name_external				Yes		
+1	Dimension	dim_facility	name_internal	4	Type2	internal name in CapOS			pharmakon.facility	name_internal				Yes		
+1	Dimension	dim_facility	ncpdpid	4	Type2	ncpdpid of pharmacy			pharmakon.facility	ncpdpid						
+1	Dimension	dim_facility	npi	4	Type2	npi of pharmacy			pharmakon.facility	npi						
+1	Dimension	dim_facility	phone	4	Type2	phone of pharmacy			pharmakon.facility	phone						
+1	Dimension	dim_facility	time_zone	4	Type2	timezone			pharmakon.facility	timezone						
+1	Dimension	dim_facility	created_at	5	Event Timestamp	created timestamp			pharmakon.facility	updated_at						
+1	Dimension	dim_facility	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_facility	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_market	dim_market_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_market	market	3	Natural Key	market name			pharmakon.market	name_external						
+1	Dimension	dim_market	pharmakon_market_id	4	Type2	id			pharmakon.market	id						
+1	Dimension	dim_market	code	4	Type2	code			pharmakon.market	code						
+1	Dimension	dim_market	name_internal	4	Type2	name_internal			pharmakon.market	name_internal						
+1	Dimension	dim_market	created_at	5	Event Timestamp	created timestamp			pharmakon.market	max of created_at						
+1	Dimension	dim_market	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_market	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_practice	dim_practice_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_practice	billing_address_key	2	Foreign Key	Practice Billing Address	dim_address						?			
+1	Dimension	dim_practice	shipping_address_key	2	Foreign Key	Practice Shipping Address	dim_address						?			
+1	Dimension	dim_practice	sf_account_id	3	Natural key	Salesforce id			salesforce.accounts	id			Payload v2	No		
+1	Dimension	dim_practice	account_name	4	Type2	Practice Name			salesforce.accounts	name	JSON - provider	practiceName				
+1	Dimension	dim_practice	comm_level	4	Type2	communication level			salesforce.accounts	communication_preference_c						
+1	Dimension	dim_practice	created_at	5	Event Timestamp	created timestamp			salesforce.accounts	last_modified_date						
+1	Dimension	dim_practice	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_practice	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_provider	dim_provider_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_provider	mailing_address_key	2	Foreign Key	FK	dim_address									
+1	Dimension	dim_provider	provider_npi	3	Natural key	npi from capsule			salesforce.contacts	npi_c	JSON - provider	npi				
+1	Dimension	dim_provider	sf_contact_id	4	Type2	Salesforce id			salesforce.contacts	id			Payload v2	No		
+1	Dimension	dim_provider	activation_day	4	Type2	Need to wait for patient model	Calculated	yes						Yes		
+1	Dimension	dim_provider	activation_day_10	4	Type2	Need to wait for patient model	Calculated	yes						Yes		
+1	Dimension	dim_provider	activation_month	4	Type2	Need to wait for patient model	Calculated	yes						Yes		
+1	Dimension	dim_provider	activation_month_10	4	Type2	Need to wait for patient model	Calculated	yes						Yes		
+1	Dimension	dim_provider	admin_pri_detail	4	Type2	admin_primary_detail_c			salesforce.contacts	admin_primary_detail_c			Payload v2	Yes		
+1	Dimension	dim_provider	admin_pri_pref	4	Type2	admin_primary_pref_c			salesforce.contacts	admin_primary_pref_c			Payload v2	Yes		
+1	Dimension	dim_provider	cap_provider_id	4	Type2	capsule provider id			pharmakon.capsule_core_provider	id	JSON - provider	id		Yes		
+1	Dimension	dim_provider	capsule_preferred_pharmacy	4	Type2	capsule_preferred_pharmacy			salesforce.contacts	capsule_opt_out_enrollment_c		capsule_opt_out_enrollment_c	Not in payload, Prava will check	Yes		
+1	Dimension	dim_provider	contact_preference	4	Type2	contact_preference			pharmakon.capsule_core_provider	contact_preference	JSON - provider	contact_preference		Yes		
+1	Dimension	dim_provider	control_refill_contact_preference	4	Type2	control_refill_contact_preference			pharmakon.capsule_core_provider	control_refill_contact_preference	JSON - provider	control_refill_contact_preference		Yes		
+1	Dimension	dim_provider	control_refill_directions	4	Type2	control_refill_directions			pharmakon.capsule_core_provider	control_refill_directions	JSON - provider	control_refill_directions		Yes		
+1	Dimension	dim_provider	day_to_activate	4	Type2	Need to wait for patient model	Calculated	yes						Yes		
+1	Dimension	dim_provider	email	4	Type2	Email			salesforce.contacts	email	JSON - provider	email		Yes		
+1	Dimension	dim_provider	fax	4	Type2	Fax			salesforce.contacts	fax	JSON - provider	fax		Yes		
+1	Dimension	dim_provider	first_incoming_patient	4	Type2	Need to wait for patient model	Calculated based on Patient	yes						Yes		
+1	Dimension	dim_provider	first_meeting	4	Type2	Need to wait for task	Calculated based on DPM	yes						Yes		
+1	Dimension	dim_provider	first_name	4	Type2	First Name			salesforce.contacts	first_name	JSON - provider	first_name		Yes		
+1	Dimension	dim_provider	insurance_preference	4	Type2	pharmakon.capsule_core_provider			pharmakon.capsule_core_provider	insurance_preference		insurance_preference	Not in payload, Prava will check	Yes		
+1	Dimension	dim_provider	is_activated	4	Type2	Need to wait for patient model	Calculated	yes						Yes		
+1	Dimension	dim_provider	job_function	4	Type2	job_function_c			salesforce.contacts	job_function_c			??			
+1	Dimension	dim_provider	last_name	4	Type2	Last Name			salesforce.contacts	last_name	JSON - provider	last_name		Yes		
+1	Dimension	dim_provider	max_month	4	Type2	Need to wait for patient model	Calculated based on Patient	yes						Yes		
+1	Dimension	dim_provider	max_np	4	Type2	Need to wait for patient model	Calculated based on Patient	yes						Yes		
+1	Dimension	dim_provider	middle_name	4	Type2	Middle Name			salesforce.contacts	middle_name	JSON - provider	middle_name		No		
+1	Dimension	dim_provider	non_control_refill_contact_preference	4	Type2	non_control_refill_contact_preference			pharmakon.capsule_core_provider	non_control_refill_contact_preference	JSON - provider	non_control_refill_contact_preference		Yes		
+1	Dimension	dim_provider	non_control_refill_direction	4	Type2	non_control_refill_direction			pharmakon.capsule_core_provider	non_control_refill_directions	JSON - provider	non_control_refill_directions		Yes		
+1	Dimension	dim_provider	pa_preference	4	Type2	pa_preference			pharmakon.capsule_core_provider	pa_preference	JSON - provider	pa_preference		Yes		
+1	Dimension	dim_provider	pharmacist_pri_detail	4	Type2	pharmacist_primary_detail_c			salesforce.contacts	pharmacist_primary_detail_c			Payload v2	Yes		
+1	Dimension	dim_provider	pharmacist_pri_ref	4	Type2	pharmacist_primary_pref_c			salesforce.contacts	pharmacist_primary_pref_c			Payload v2	Yes		
+1	Dimension	dim_provider	phone	4	Type2	Phone			salesforce.contacts	phone	JSON - provider	phone		Yes		
+1	Dimension	dim_provider	provider_dea	4	Type2	dea from capsule			pharmakon.capsule_core_provider	dea	JSON - provider	dea		No		
+1	Dimension	dim_provider	refill_preference	4	Type2	refill_preference			pharmakon.capsule_core_provider	refills_preference	JSON - provider	refills_preference		Yes		
+1	Dimension	dim_provider	score	4	Type2	score_c			salesforce.contacts	score_c			??			
+1	Dimension	dim_provider	specialty	4	Type2	Specialty			salesforce.contacts	specialty_c	JSON - provider	specialty		Yes		
+1	Dimension	dim_provider	sub_specialty	4	Type2	Sub Specialty			salesforce.contacts	sub_specialty_c			??	Yes		
+1	Dimension	dim_provider	therapeutic_subs_protocol	4	Type2	therapeutic_substitution_protocol_c			salesforce.contacts	therapeutic_substitution_protocol_c			Payload v1	Yes		
+1	Dimension	dim_provider	created_at	5	Event Timestamp	created timestamp			salesforce.contacts	last_modified_date						
+1	Dimension	dim_provider	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_provider	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_provider_preference	dim_provider_preference_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_provider_preference	dim_provider_key	2	Foreign Key	FK	dim_provider									
+1	Dimension	dim_provider_preference	provider_npi	3	Natural key	npi from capsule			salesforce.contacts	npi_c	JSON - provider	npi				
+1	Dimension	dim_provider_preference	Admin_Primary_Detail	4	Type2	Admin_Primary_Detail_c			salesforce.contacts	Admin_Primary_Detail_c	JSON - provider	Admin_Primary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Admin_Primary_Pref	4	Type2	Admin_Primary_Pref_c			salesforce.contacts	Admin_Primary_Pref_c	JSON - provider	Admin_Primary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Admin_Secondary_Detail	4	Type2	Admin_Secondary_Detail_c			salesforce.contacts	Admin_Secondary_Detail_c	JSON - provider	Admin_Secondary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Admin_Secondary_Pref	4	Type2	Admin_Secondary_Pref_c			salesforce.contacts	Admin_Secondary_Pref_c	JSON - provider	Admin_Secondary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	PA_Primary_Detail	4	Type2	PA_Primary_Detail_c			salesforce.contacts	PA_Primary_Detail_c	JSON - provider	PA_Primary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	PA_Primary_Pref	4	Type2	Contact_Pref_for_PA_Information_c			salesforce.contacts	Contact_Pref_for_PA_Information_c	JSON - provider	Contact_Pref_for_PA_Information_c	Payload v2			
+1	Dimension	dim_provider_preference	PA_Secondary_Detail	4	Type2	PA_Secondary_Detail_c			salesforce.contacts	PA_Secondary_Detail_c	JSON - provider	PA_Secondary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	PA_Secondary_Pref	4	Type2	PA_Secondary_Pref_c			salesforce.contacts	PA_Secondary_Pref_c	JSON - provider	PA_Secondary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Pharmacist_Primary_Detail	4	Type2	Pharmacist_Primary_Detail_c			salesforce.contacts	Pharmacist_Primary_Detail_c	JSON - provider	Pharmacist_Primary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Pharmacist_Primary_Pref	4	Type2	Pharmacist_Primary_Pref_c			salesforce.contacts	Pharmacist_Primary_Pref_c	JSON - provider	Pharmacist_Primary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Pharmacist_Secondary_Detail	4	Type2	Pharmacist_Secondary_Detail_c			salesforce.contacts	Pharmacist_Secondary_Detail_c	JSON - provider	Pharmacist_Secondary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Pharmacist_Secondary_Pref	4	Type2	Pharmacist_Secondary_Pref_c			salesforce.contacts	Pharmacist_Secondary_Pref_c	JSON - provider	Pharmacist_Secondary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Controls_Primary_Detail	4	Type2	Refills_Controls_Primary_Detail_c			salesforce.contacts	Refills_Controls_Primary_Detail_c	JSON - provider	Refills_Controls_Primary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Controls_Primary_Pref	4	Type2	Refills_Controls_Primary_Pref_c			salesforce.contacts	Refills_Controls_Primary_Pref_c	JSON - provider	Refills_Controls_Primary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Controls_Secondary_Detail	4	Type2	Refills_Controls_Secondary_Detail_c			salesforce.contacts	Refills_Controls_Secondary_Detail_c	JSON - provider	Refills_Controls_Secondary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Controls_Secondary_Pref	4	Type2	Refills_Controls_Secondary_Pref_c			salesforce.contacts	Refills_Controls_Secondary_Pref_c	JSON - provider	Refills_Controls_Secondary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Non_Controls_Primary_Detail	4	Type2	Refills_Non_Controls_Primary_Detail_c			salesforce.contacts	Refills_Non_Controls_Primary_Detail_c	JSON - provider	Refills_Non_Controls_Primary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Non_Controls_Primary_Pref	4	Type2	Refills_Non_Controls_Primary_Pref_c			salesforce.contacts	Refills_Non_Controls_Primary_Pref_c	JSON - provider	Refills_Non_Controls_Primary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Non_Controls_Secondary_Detail	4	Type2	Refills_Non_Controls_Secondary_Detail_c			salesforce.contacts	Refills_Non_Controls_Secondary_Detail_c	JSON - provider	Refills_Non_Controls_Secondary_Detail_c	Payload v2			
+1	Dimension	dim_provider_preference	Refills_Non_Controls_Secondary_Pref	4	Type2	Refills_Non_Controls_Secondary_Pref_c			salesforce.contacts	Refills_Non_Controls_Secondary_Pref_c	JSON - provider	Refills_Non_Controls_Secondary_Pref_c	Payload v2			
+1	Dimension	dim_provider_preference	created_at	5	Event Timestamp	created timestamp			salesforce.contacts	last_modified_date	JSON - provider	event timestamp	Payload v2			
+1	Dimension	dim_provider_preference	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_provider_preference	expired_at	5	Record Expired	expired timestamp		yes								
+1	Dimension	dim_territory	dim_territory_key	1	Primary Key	Unique internal id	identity									
+1	Dimension	dim_territory	territory	3	Natural key	DPM Territory			salesforce.contacts	x2019_territory_c			Payload V2 as "x2019Territory"	Yes		
+1	Dimension	dim_territory	created_at	5	Event Timestamp	created timestamp			salesforce.contacts	last_modified_date						
+1	Dimension	dim_territory	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Dimension	dim_territory	expired_at	5	Record Expired	expired timestamp		yes								
+1	Fact	fact_provider	fact_provider_key	1	Primary Key	Unique internal id	identity									
+1	Fact	fact_provider	dim_market_key	2	Foreign Key	FK	dim_market									
+1	Fact	fact_provider	dim_territory_key	2	Foreign Key	FK	dim_territory									
+1	Fact	fact_provider	dim_dpm_key	2	Foreign Key	FK	dim_dpm									
+1	Fact	fact_provider	dim_practice_key	2	Foreign Key	FK	dim_practice									
+1	Fact	fact_provider	dim_provider_key	2	Foreign Key	FK	dim_provider									
+1	Fact	fact_provider	counts	4	Measures	counts	default value of 1, may come from union of provider and dpm as anchor table		salesforce.users, salesforce.contacts	count of id						
+1	Fact	fact_provider	created_at	5	Event Timestamp	created timestamp			dim_facility, dim_territory, dim_dpm, dim_practice, dim_provider	max of created_at						
+1	Fact	fact_provider	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Fact	fact_provider	expired_at	5	Record Expired	expired timestamp		yes								
+1	Fact	fact_provider_comm	fact_provider_comm_key	1	Primary Key	Unique internal id	identity									
+1	Fact	fact_provider_comm	dim_market_key	2	Foreign Key	FK	dim_market									
+1	Fact	fact_provider_comm	dim_contact_method_key	2	Foreign Key	FK	dim_contact_method									
+1	Fact	fact_provider_comm	dim_contact_type_key	2	Foreign Key	FK	dim_contact_type									
+1	Fact	fact_provider_comm	dim_dpm_key	2	Foreign Key	FK	dim_dpm									
+1	Fact	fact_provider_comm	dim_provider_key	2	Foreign Key	FK	dim_provider									
+1	Fact	fact_provider_comm	dim_practice_key	2	Foreign Key	FK	dim_practice									
+1	Fact	fact_provider_comm	contact_date	4	Measures	When was the communication			Salesforce.tasks	activity_date			Payload v2	Yes		
+1	Fact	fact_provider_comm	result	4	Measures	What was outcome			Salesforce.tasks	result_c			Payload v2	Yes		
+1	Fact	fact_provider_comm	status	4	Measures	What was status			Salesforce.tasks	status			Payload v2	Yes		
+1	Fact	fact_provider_comm	subject	4	Measures	What was subject			Salesforce.tasks	subject			??	??		
+1	Fact	fact_provider_comm	created_at	5	Event Timestamp	created timestamp			Salesforce.tasks	last_modified_date						
+1	Fact	fact_provider_comm	is_active	5	Record Active	Active flag	Default 1	yes								
+1	Fact	fact_provider_comm	expired_at	5	Record Expired	expired timestamp		yes								
+2	Dimension	dim_invoice	dim_invoice_key	1	Primary Key	Unique internal id	identity									
+2	Dimension	dim_invoice	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Dimension	dim_invoice	invoice_number	3	Natural Key	invoice number			pioneer_realtime.iteminvoice	invoicenumber						
+2	Dimension	dim_invoice	invoice_date	4	Type2	date of invoice			pioneer_realtime.iteminvoice	invoicedate						
+2	Dimension	dim_invoice	invoice_month	4	Type2	month of the invocie date	Calculated with etl	yes								
+2	Dimension	dim_invoice	invoice_total_cost	4	Type2	total sum of all invocied item	Calculated with etl	yes								
+2	Dimension	dim_invoice	created_at	5	Event Timestamp	created timestamp			pioneer_realtime.iteminvoice	invoicedate						
+2	Dimension	dim_invoice	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Dimension	dim_invoice	expired_at	5	Record Expired	expired timestamp		yes								
+2	Dimension	dim_order	dim_order_key	1	Primary Key	Unique internal id	identity									
+2	Dimension	dim_order	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Dimension	dim_order	pharmakon_order_id	3	Natural Key	Pharmakon Order ID			pharmakon.capsule_core_order	id				I think this is the same as order_number		
+2	Dimension	dim_order	order_number	4	Type2	Order number			JSON - Inventory - SkuReserved	orderId	JSON - Inventory - SkuReserved	orderId		I think this is the same as "pharmakon_order_id"	reservesku, unreservesku	orderid
+2	Dimension	dim_order	pharmakon_order_created_at	4	Type2	Order date			pharmakon.capsule_core_order	created_at						
+2	Dimension	dim_order	pharmakon_order_created_by	4	Type2	pharmakon_order_created_by	Did not find a name column		pharmakon.capsule_auth_user	email				I've never used this but useful to include for uture		
+2	Dimension	dim_order	source	4	Type2	source			pharmakon.capsule_core_order	source						
+2	Dimension	dim_order	on_hold	4	Type2	on_hold			pharmakon.capsule_core_order	on_hold				I've never used this but useful to include for uture		
+2	Dimension	dim_order	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_order	updated_at						
+2	Dimension	dim_order	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Dimension	dim_order	expired_at	5	Record Expired	expired timestamp		yes								
+2	Dimension	dim_prescription	dim_prescription_key	1	Primary Key	Unique internal id	identity									
+2	Dimension	dim_prescription	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Dimension	dim_prescription	pharmakon_rx_id	3	Natural Key	pioneer rx number			pharmakon.capsule_core_prescription	id						
+2	Dimension	dim_prescription	pharmakon_control_schedule	4	Type2	if it is a controlled drug			pharmakon.capsule_core_prescription	control_schedule						
+2	Dimension	dim_prescription	date_written	4	Type2	date the prescripton written			pharmakon.capsule_core_prescription	date_written						
+2	Dimension	dim_prescription	expiration_date	4	Type2	expiration date of prescription			pharmakon.capsule_core_prescription	expiration_date						
+2	Dimension	dim_prescription	prescribed_ndc	4	Type2	national drug code			pharmakon.capsule_core_prescription	national_drug_code						
+2	Dimension	dim_prescription	quantity_prescribed	4	Type2	quntity prescribed			pharmakon.capsule_core_prescription	quantity_prescribed						
+2	Dimension	dim_prescription	quantity	4	Type2	quantity			pharmakon.capsule_core_prescription	quantity						
+2	Dimension	dim_prescription	quantity_remaining	4	Type2	quantity_remaining			pharmakon.capsule_core_prescription	quantity_remaining						
+2	Dimension	dim_prescription	refills_allowed	4	Type2	refills_allowed			pharmakon.capsule_core_prescription	refills_allowed						
+2	Dimension	dim_prescription	instructions	4	Type2	instructions			pharmakon.capsule_core_prescription	instructions						
+2	Dimension	dim_prescription	is_recurring	4	Type2	is_recurring		yes								
+2	Dimension	dim_prescription	origin_type	4	Type2	origin_type		yes								
+2	Dimension	dim_prescription	first_claimed_at	4	Type2	first_claimed_at		yes								
+2	Dimension	dim_prescription	first_cart_at	4	Type2	first_cart_at		yes								
+2	Dimension	dim_prescription	first_ordered_at	4	Type2	first_ordered_at		yes								
+2	Dimension	dim_prescription	first_delivered_at	4	Type2	first_delivered_at		yes								
+2	Dimension	dim_prescription	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_prescription	updated_at						
+2	Dimension	dim_prescription	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Dimension	dim_prescription	expired_at	5	Record Expired	expired timestamp		yes								
+2	Dimension	dim_sku	dim_sku_key	1	Primary Key	Unique internal id	identity									
+2	Dimension	dim_sku	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Dimension	dim_sku	dim_medication_key	2	Foreign Key	FK	dim_medication									
+2	Dimension	dim_sku	sku	3	Natural Key	sku			JSON - Inventory - SkuCreated	uuid	JSON - Inventory - SkuCreated	uuid			createsku	sku
+2	Dimension	dim_sku	brand_status	4	Type2	status of brand	Calculated	yes								
+2	Dimension	dim_sku	control_schedule	4	Type2	controlled drug			pioneer_realtime.item	deaschedule						
+2	Dimension	dim_sku	dosage_form	4	Type2	form of dosage			pioneer_realtime.itemdosageform	dosageformtext						
+2	Dimension	dim_sku	gcn	4	Type2	gcn to gorup equivalent drug			pioneer_realtime.item	gcn						
+2	Dimension	dim_sku	hicl	4	Type2	Insurance contract number for drug			pioneer_realtime.item	hicl						
+2	Dimension	dim_sku	is_sold_otc	4	Type2	is it sold over the counter?			pioneer_realtime.item	issoldotc						
+2	Dimension	dim_sku	item_name	4	Type2	item name			JSON - Inventory - SkuCreated	productName	JSON - Inventory - SkuCreated	productName			createsku	productName
+2	Dimension	dim_sku	item_type_id	4	Type2	itemtypeid			pioneer_realtime.item	itemtypeid						
+2	Dimension	dim_sku	label_type_id	4	Type2	labeltypeid			pioneer_realtime.item	labeltypeid						
+2	Dimension	dim_sku	manufacturer	4	Type2	manufacturer			pioneer_realtime.item	manufacturer						
+2	Dimension	dim_sku	min_boh	4	Type2	min BOH specified			insights_sheets.inventory_minimum_boh_v2	min_boh						
+2	Dimension	dim_sku	ndc	4	Type2	national drug code			pioneer_realtime.item	ndc	JSON - Inventory - SkuCreated	productType			createsku	productType
+2	Dimension	dim_sku	preferred_item	4	Type2	preferred brand	Calculated	yes								
+2	Dimension	dim_sku	stock_size	4	Type2	number of pills/etc. per package			pioneer_realtime.item	stocksize						
+2	Dimension	dim_sku	upc	4	Type2	upc			pioneer_realtime.item	upc						
+2	Dimension	dim_sku	created_at	5	Event Timestamp	created timestamp			pioneer_realtime.item, JSON - Inventory - SkuCreated	max on changedonutc, event data						
+2	Dimension	dim_sku	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Dimension	dim_sku	expired_at	5	Record Expired	expired timestamp		yes								
+2	Dimension	dim_supplier	dim_supplier_key	1	Primary Key	Unique internal id	identity									
+2	Dimension	dim_supplier	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Dimension	dim_supplier	supplier_name	3	Natural Key	Supplier name			pioneer_realtime.supplier	suppliername						
+2	Dimension	dim_supplier	preferred_supplier	4	Type2	If it is a preferred supplier		yes		default is "N"						
+2	Dimension	dim_supplier	created_at	5	Event Timestamp	created timestamp				sysdate						
+2	Dimension	dim_supplier	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Dimension	dim_supplier	expired_at	5	Record Expired	expired timestamp		yes								
+2	Fact	fact_inventory	fact_inventory_key	1	Primary Key	Unique internal id	identity									
+2	Fact	fact_inventory	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Fact	fact_inventory	dim_sku_key	2	Foreign Key	FK	dim_sku									
+2	Fact	fact_inventory	adding_stock	4	Measures	adding inventory			JSON - Inventory - SkuStockAdded	quantity	JSON - Inventory - SkuStockAdded	quantity			setstockforsku	productType
+2	Fact	fact_inventory	balance_on_hand	4	Measures	BOH			pharmakon.capsule_core_inventoryonhand	balance_on_hand			It should come from JSON			
+2	Fact	fact_inventory	quantity_to_order	4	Measures	quantity to order	calculated with etl	yes								
+2	Fact	fact_inventory	reserved	4	Measures	reserved inventory			JSON - Inventory - SkuReserved	quantity	JSON - Inventory - SkuReserved	quantity			reservesku, unreservesku	quantity
+2	Fact	fact_inventory	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_inventoryonhand, JSON - Inventory	max on updated_at, event data						
+2	Fact	fact_inventory	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Fact	fact_inventory	expired_at	5	Record Expired	expired timestamp		yes								
+2	Fact	fact_inventory_order	fact_inventory_order_key	1	Primary Key	Unique internal id	identity									
+2	Fact	fact_inventory_order	dim_facility_key	2	Foreign Key	FK	dim_facility									
+2	Fact	fact_inventory_order	dim_invoice_key	2	Foreign Key	FK	dim_invoice									
+2	Fact	fact_inventory_order	dim_sku_key	2	Foreign Key	FK	dim_sku									
+2	Fact	fact_inventory_order	dim_supplier_key	2	Foreign Key	FK	dim_supplier									
+2	Fact	fact_inventory_order	invoice_awp	4	Measures	average wholesale price			pioneer_realtime.inventorygroup	awp						
+2	Fact	fact_inventory_order	invoice_awp_changed_date	4	Measures	invoice_awp_changed_date			pioneer_realtime.inventorygroup	awpchangeddate						
+2	Fact	fact_inventory_order	invoice_awp_source_id	4	Measures	invoice_awp_source_id			pioneer_realtime.inventorygroup	awpsourceid						
+2	Fact	fact_inventory_order	invoice_cost_per_unit	4	Measures	cost per unit package			pioneer_realtime.iteminvoicedetail	invoicecostperunit						
+2	Fact	fact_inventory_order	invoice_dispensing_unit_rcvd_qty	4	Measures	quantity recived in package x stocksize			pioneer_realtime.iteminvoicedetail	dispensingunitreceivedquantity						
+2	Fact	fact_inventory_order	invoice_preferred_awp	4	Measures	invoice_preferred_awp			pioneer_realtime.inventorygroup	preferredawp						
+2	Fact	fact_inventory_order	invoice_received_quantity	4	Measures	quantity recived in package			pioneer_realtime.iteminvoicedetail	receivedquantity						
+2	Fact	fact_inventory_order	invoice_total_cost	4	Measures	cost per unit package x received quantity			pioneer_realtime.iteminvoicedetail	invoicetotalcost						
+2	Fact	fact_inventory_order	invoice_wac	4	Measures	wholesale acquisition cost			pioneer_realtime.inventorygroup	wac						
+2	Fact	fact_inventory_order	invoice_wac_changed_date	4	Measures	wac changed date			pioneer_realtime.inventorygroup	wacchangeddate						
+2	Fact	fact_inventory_order	invoice_wac_source_id	4	Measures	wac source			pioneer_realtime.inventorygroup	wacsourceid						
+2	Fact	fact_inventory_order	created_at	5	Event Timestamp	created timestamp			pioneer_realtime.iteminvoice	invoicedate						
+2	Fact	fact_inventory_order	is_active	5	Record Active	Active flag	Default 1	yes								
+2	Fact	fact_inventory_order	expired_at	5	Record Expired	expired timestamp		yes								
+3	Dimension	dim_account	dim_account_key	1	Primary Key	Unique internal id	identity									
+3	Dimension	dim_account	dim_facility_key	2	Foreign Key	FK	dim_facility									
+3	Dimension	dim_account	pharmakon_user_uuid	3	Natural Key	pharmakon_user_uuid			pharmakon.capsule_core_account	user_uuid						
+3	Dimension	dim_account	phone	4	Type2	phone			pharmakon.capsule_core_account	phone						
+3	Dimension	dim_account	pharmakon_account_id	4	Type2	account id			pharmakon.capsule_core_account	id						
+3	Dimension	dim_account	kustomer_customer_id	4	Type2	kustomer_customer_id			pharmakon.capsule_core_account	kustomer_customer_id						
+3	Dimension	dim_account	stripe_cutomer_id	4	Type2	stripe_customer_id			pharmakon.capsule_core_account	stripe_customer_id						
+3	Dimension	dim_account	onfleet_recipient_id	4	Type2	onfleet_recipient_id			pharmakon.capsule_core_account	onfleet_recipient_id						
+3	Dimension	dim_account	signup_source	4	Type2	signup_source			pharmakon.capsule_core_account	signup_source						
+3	Dimension	dim_account	account_created_at	4	Type2	account_created_at			pharmakon.capsule_core_account	created_at						
+3	Dimension	dim_account	zip_code	4	Type2	zip_code			pharmakon.capsule_core_account	zip_code						
+3	Dimension	dim_account	phone_type	4	Type2	phone_type			pharmakon.capsule_core_account	phone_type						
+3	Dimension	dim_account	phone_carrier	4	Type2	phone_carrier	calculated with etl	yes								
+3	Dimension	dim_account	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_account	created_at						
+3	Dimension	dim_account	is_active	5	Record Active	Active flag	Default 1	yes								
+3	Dimension	dim_account	expired_at	5	Record Expired	expired timestamp		yes								
+3	Dimension	dim_address (fact cart)	dim_address_key	1	Primary Key	Unique internal id	identity									
+3	Dimension	dim_address (fact cart)	city	3	Natural Key	City			pharmakon.capsule_core_deliveryaddress	city						
+3	Dimension	dim_address (fact cart)	state	3	Natural Key	State			pharmakon.capsule_core_deliveryaddress	state						
+3	Dimension	dim_address (fact cart)	street_one	3	Natural Key	Street 1			pharmakon.capsule_core_deliveryaddress	street						
+3	Dimension	dim_address (fact cart)	street_two	3	Natural Key	Street 2			pharmakon.capsule_core_deliveryaddress	street_two						
+3	Dimension	dim_address (fact cart)	zip	3	Natural Key	Zip			pharmakon.capsule_core_deliveryaddress	zip_code						
+3	Dimension	dim_address (fact cart)	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_deliveryaddress	updated_at						
+3	Dimension	dim_address (fact cart)	is_active	5	Record Active	Active flag	Default 1	yes								
+3	Dimension	dim_address (fact cart)	expired_at	5	Record Expired	expired timestamp		yes								
+3	Dimension	dim_cart	dim_cart_key	1	Primary Key	Unique internal id	identity									
+3	Dimension	dim_cart	dim_facility_key	2	Foreign Key	FK	dim_facility									
+3	Dimension	dim_cart	pharmakon_cart_id	3	Natural Key				pharmakon.capsule_core_cart	id						
+3	Dimension	dim_cart	source	4	Type2	source			pharmakon.capsule_core_cart	source						
+3	Dimension	dim_cart	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_cart	updated_at						
+3	Dimension	dim_cart	is_active	5	Record Active	Active flag	Default 1	yes								
+3	Dimension	dim_cart	expired_at	5	Record Expired	expired timestamp		yes								
+3	Dimension	dim_cart_item	dim_cart_item_key	1	Primary Key	Unique internal id	identity									
+3	Dimension	dim_cart_item	dim_cart_key	2	Foreign Key	FK	dim_cart									
+3	Dimension	dim_cart_item	dim_sku_key	2	Foreign Key	FK	dim_sku									
+3	Dimension	dim_cart_item	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_cart	updated_at						
+3	Dimension	dim_cart_item	is_active	5	Record Active	Active flag	Default 1	yes								
+3	Dimension	dim_cart_item	expired_at	5	Record Expired	expired timestamp		yes								
+3	Fact	fact_cart	fact_cart_key	1	Primary Key	Unique internal id	identity									
+3	Fact	fact_cart	dim_account_key	2	Foreign Key	FK	dim_account									
+3	Fact	fact_cart	dim_cart_key	2	Foreign Key	FK	dim_cart									
+3	Fact	fact_cart	dim_delivery_address_key	2	Foreign Key	FK	dim_address									
+3	Fact	fact_cart	dim_delivery_window_key	2	Foreign Key	FK	dim_delivery_window									
+3	Fact	fact_cart	dim_facility_key	2	Foreign Key	FK	dim_facility									
+3	Fact	fact_cart	dim_order_key	2	Foreign Key	FK	dim_order									
+3	Fact	fact_cart	cart_start	4	Measures	start time			pharmakon.delivery_window	start_time						
+3	Fact	fact_cart	cart_end	4	Measures	end time			pharmakon.delivery_window	end_time						
+3	Fact	fact_cart	available_windows	4	Measures	available_windows	Calculated with etl	yes								
+3	Fact	fact_cart	has_same_day_window	4	Measures	has_same_day_window	Calculated with etl	yes								
+3	Fact	fact_cart	same_day_windows	4	Measures	same_day_windows	Calculated with etl	yes								
+3	Fact	fact_cart	suppressed_no_doorman	4	Measures	suppressed_no_doorman	Calculated with etl	yes								
+3	Fact	fact_cart	suppressed_oos	4	Measures	suppressed_oos	Calculated with etl	yes								
+3	Fact	fact_cart	suppressed_past_cutoff	4	Measures	suppressed_past_cutoff	Calculated with etl	yes								
+3	Fact	fact_cart	suppressed_window_capacity	4	Measures	suppressed_window_capacity	Calculated with etl	yes								
+3	Fact	fact_cart	suppressed_window_closed	4	Measures	suppressed_window_closed	Calculated with etl	yes								
+3	Fact	fact_cart	suppressed_windows	4	Measures	suppressed_windows	Calculated with etl	yes								
+3	Fact	fact_cart	total_windows	4	Measures	total_windows	Calculated with etl	yes								
+3	Fact	fact_cart	created_at	5	Event Timestamp	created timestamp			pharmakon.delivery_window	end_time						
+3	Fact	fact_cart	is_active	5	Record Active	Active flag	Default 1	yes								
+3	Fact	fact_cart	expired_at	5	Record Expired	expired timestamp		yes								
+4	Dimension	dim_order_item	dim_order_item_key	1	Primary Key	Unique internal id	identity									
+4	Dimension	dim_order_item	dim_sku_key	2	Foreign Key	FK	dim_sku									
+4	Dimension	dim_order_item	dim_order_key	2	Foreign Key	FK	dim_order									
+4	Dimension	dim_order_item	__orderitem_id	4	Natural Key				pharmakon.capsule_core_orderitem	id												
+4	Dimension	dim_order_item	price	4	Type2	price			pharmakon.capsule_core_orderitem	price						
+4	Dimension	dim_order_item	is_out_of_stock	4	Type2	out_of_stock			pharmakon.capsule_core_orderitem	out_of_stock						
+4	Dimension	dim_order_item	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_orderitem	created_at						
+4	Dimension	dim_order_item	is_active	5	Record Active	Active flag	Default 1	yes								
+4	Dimension	dim_order_item	expired_at	5	Record Expired	expired timestamp		yes								
+4	Fact	fact_order	fact_order_key	1	Primary Key	Unique internal id	identity									
+4	Fact	fact_order	dim_order_key	2	Foreign Key	FK	dim_order									
+4	Fact	fact_order	dim_cart_key	2	Foreign Key	FK	dim_cart									
+4	Fact	fact_order	dim_facility_key	2	Foreign Key	FK	dim_facility									
+4	Fact	fact_order	dim_account_key	2	Foreign Key	FK	dim_account									
+4	Fact	fact_order	dim_delivery_window_key	2	Foreign Key	FK	dim_delivery_window									
+4	Fact	fact_order	dim_delivery_address_key	2	Foreign Key	FK	dim_address		pharmakon.capsule_core_order	status_processing_at						
+4	Fact	fact_order	status_processing_at	4	Measures	status_processing_at			pharmakon.capsule_core_order	status						
+4	Fact	fact_order	order_status	4	Measures	order_status										
+4	Fact	fact_order	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_order	updated_at						
+4	Fact	fact_order	is_active	5	Record Active	Active flag	Default 1									
+4	Fact	fact_order	expired_at	5	Record Expired	expired timestamp	Calculated	yes								
+4	Fact	fact_order_payment	fact_order_payment_key	1	Primary Key	Unique internal id	identity									
+4	Fact	fact_order_payment	dim_order_key	2	Foreign Key	FK	dim_order									
+4	Fact	fact_order_payment	dim_facility_key	2	Foreign Key	FK	dim_facility									
+4	Fact	fact_order_payment	dim_account_key	2	Foreign Key	FK	dim_account									
+4	Fact	fact_order_payment	stripe_card_id	4	Measures	stripe_card_id			pharmakon.capsule_core_order	stripe_card_id						
+4	Fact	fact_order_payment	stripe_charge_id	4	Measures	stripe_charge_id			pharmakon.capsule_core_order	stripe_charge_id						
+4	Fact	fact_order_payment	sub_total	4	Measures	sub_total			pharmakon.capsule_core_order	subtotal						
+4	Fact	fact_order_payment	payment_status	4	Measures	payment_status			pharmakon.capsule_core_order	payment_status						
+4	Fact	fact_order_payment	stripe_auth_status	4	Measures	stripe_auth_status			pharmakon.capsule_core_order	stripe_auth_status						
+4	Fact	fact_order_payment	payment_status_charging_at	4	Measures	payment_status_charging_at			pharmakon.capsule_core_order	payment_status_charging_at						
+4	Fact	fact_order_payment	payment_status_completed_at	4	Measures	payment_status_completed_at			pharmakon.capsule_core_order	payment_status_completed_at						
+4	Fact	fact_order_payment	payment_status_failed_at	4	Measures	payment_status_failed_at			pharmakon.capsule_core_order	payment_status_failed_at						
+4	Fact	fact_order_payment	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_order	updated_at						
+4	Fact	fact_order_payment	is_active	5	Record Active	Active flag	Default 1									
+4	Fact	fact_order_payment	expired_at	5	Record Expired	expired timestamp	Calculated	yes								
+4	Fact	fact_order_snapshot	fact_order_snapshot_key	1	Primary Key	Unique internal id	identity									
+4	Fact	fact_order_snapshot	dim_order_key	2	Foreign Key	FK	dim_order									
+4	Fact	fact_order_snapshot	dim_cart_key	2	Foreign Key	FK	dim_cart									
+4	Fact	fact_order_snapshot	dim_facility_key	2	Foreign Key	FK	dim_facility									
+4	Fact	fact_order_snapshot	dim_account_key	2	Foreign Key	FK	dim_account									
+4	Fact	fact_order_snapshot	dim_delivery_window_key	2	Foreign Key	FK	dim_delivery_window									
+4	Fact	fact_order_snapshot	dim_delivery_address_key	2	Foreign Key	FK	dim_address									
+4	Fact	fact_order_snapshot	order_source	4	Measures	order_source			pharmakon.capsule_core_order	source						
+4	Fact	fact_order_snapshot	order_start	4	Measures	start time			pharmakon.delivery_window	start_time						
+4	Fact	fact_order_snapshot	order_end	4	Measures	end time			pharmakon.delivery_window	end_time						
+4	Fact	fact_order_snapshot	is_out_of_stock	4	Measures	is_out_of_stock			pharmakon.capsule_core_order	is_out_of_stock						
+4	Fact	fact_order_snapshot	order_final_status	4	Measures	final order status, not the time series	Can be sourced from other dim tables		pharmakon.capsule_core_order	status						
+4	Fact	fact_order_snapshot	payment_final_status	4	Measures	final payment status, not the time series	Can be sourced from other dim tables		pharmakon.capsule_core_order	payment_status						
+4	Fact	fact_order_snapshot	status_ordering_at	4	Measures	status ordering at	Calculated with etl	yes								
+4	Fact	fact_order_snapshot	status_delivering_at	4	Measures	status_delivering_at			pharmakon.capsule_core_order	status_delivering_at						
+4	Fact	fact_order_snapshot	status_completed_at	4	Measures	status_completed_at			pharmakon.capsule_core_order	status_completed_at						
+4	Fact	fact_order_snapshot	status_canceled_at	4	Measures	status_canceled_at			pharmakon.capsule_core_order	status_canceled_at						
+4	Fact	fact_order_snapshot	status_postponed_at	4	Measures	status_postponed_at			pharmakon.capsule_core_order	status_postponed_at						
+4	Fact	fact_order_snapshot	status_packed_at	4	Measures	status_packed_at			pharmakon.capsule_core_order	status_packed_at						
+4	Fact	fact_order_snapshot	prep_and_filled_at	4	Measures	prep_and_filled_at			pharmakon.capsule_core_order	prep_and_filled_at						
+4	Fact	fact_order_snapshot	is_out_of_sla	4	Measures	is_out_of_sla	Calculated	yes								
+4	Fact	fact_order_snapshot	is_perfect_order_customer	4	Measures	is_perfect_order_customer	Calculated	yes								
+4	Fact	fact_order_snapshot	is_perfect_order_ops	4	Measures	is_perfect_order_ops	Calculated	yes								
+4	Fact	fact_order_snapshot	customer_expected_start	4	Measures	customer_expected_start	Calculated	yes								
+4	Fact	fact_order_snapshot	customer_expected_end	4	Measures	customer_expected_end	Calculated	yes								
+4	Fact	fact_order_snapshot	customer_expected_window_category	4	Measures	customer_expected_window_category	Calculated	yes								
+4	Fact	fact_order_snapshot	is_rescheduled	4	Measures	is_rescheduled	Can be sourced from other dim tables	yes								
+4	Fact	fact_order_snapshot	inventory_reschedule	4	Measures	inventory_reschedule	Can be sourced from other dim tables	yes								
+4	Fact	fact_order_snapshot	customer_reschedule	4	Measures	customer_reschedule	Can be sourced from other dim tables	yes								
+4	Fact	fact_order_snapshot	capsule_reschedule	4	Measures	capsule_reschedule	Can be sourced from other dim tables	yes								
+4	Fact	fact_order_snapshot	is_at_checkout_oos	4	Measures	is_at_checkout_oos	Calculated	yes								
+4	Fact	fact_order_snapshot	is_late_delivery	4	Measures	is_late_delivery	Calculated	yes								
+4	Fact	fact_order_snapshot	is_not_same_day_available_cus	4	Measures	is_not_same_day_available_cus	Calculated	yes								
+4	Fact	fact_order_snapshot	is_not_same_day_available_ops	4	Measures	is_not_same_day_available_ops	Calculated	yes								
+4	Fact	fact_order_snapshot	is_first_order	4	Measures	is_first_order	Calculated	yes								
+4	Fact	fact_order_snapshot	created_at	5	Event Timestamp	created timestamp	Can be populated in every 10 mins	yes								
+4	Fact	fact_order_snapshot	is_active	5	Record Active	Active flag	Default 1									
+4	Fact	fact_order_snapshot	expired_at	5	Record Expired	expired timestamp	Calculated	yes								
+5	Dimension	dim_address (fact delivery)	dim_address_key	1	Primary Key	Unique internal id	identity									
+5	Dimension	dim_address (fact delivery)	city	3	Natural Key	City			pharmakon.capsule_core_deliveryaddress, pharmakon.capsule_core_deliveredaddress	city						
+5	Dimension	dim_address (fact delivery)	state	3	Natural Key	State			pharmakon.capsule_core_deliveryaddress, pharmakon.capsule_core_deliveredaddress	state						
+5	Dimension	dim_address (fact delivery)	street_one	3	Natural Key	Street 1			pharmakon.capsule_core_deliveryaddress, pharmakon.capsule_core_deliveredaddress	street						
+5	Dimension	dim_address (fact delivery)	street_two	3	Natural Key	Street 2			pharmakon.capsule_core_deliveryaddress, pharmakon.capsule_core_deliveredaddress	street_two						
+5	Dimension	dim_address (fact delivery)	zip	3	Natural Key	Zip			pharmakon.capsule_core_deliveryaddress, pharmakon.capsule_core_deliveredaddress	zip_code						
+5	Dimension	dim_address (fact delivery)	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_deliveryaddress, pharmakon.capsule_core_deliveredaddress	updated_at						
+5	Dimension	dim_address (fact delivery)	is_active	5	Record Active	Active flag	Default 1	yes								
+5	Dimension	dim_address (fact delivery)	expired_at	5	Record Expired	expired timestamp		yes								
+5	Dimension	dim_delivery_window	dim_delivery_window_key	1	Primary Key	Unique internal id	identity									
+5	Dimension	dim_delivery_window	end_at	3	Natural Key	end_at			pharmakon.delivery_window	end_time						
+5	Dimension	dim_delivery_window	start_at	3	Natural Key	start_at			pharmakon.delivery_window	start_time						
+5	Dimension	dim_delivery_window	capacity	4	Type2	capacity			pharmakon.delivery_window	capacity						
+5	Dimension	dim_delivery_window	cutoff_time	4	Type2	cutoff_time			pharmakon.delivery_window	cutoff_time						
+5	Dimension	dim_delivery_window	delivery_tier	4	Type2	delivery_tier			pharmakon.delivery_tier	name						
+5	Dimension	dim_delivery_window	delivery_window_category	4	Type2	delivery_window_category			pharmakon.delivery_window_category	name						
+5	Dimension	dim_delivery_window	is_open	4	Type2	is_open			pharmakon.delivery_window	is_open						
+5	Dimension	dim_delivery_window	pack_time	4	Type2	pack_time			pharmakon.delivery_window	pack_time						
+5	Dimension	dim_delivery_window	pre_check_time	4	Type2	pre_check_time			pharmakon.delivery_window	precheck_time						
+5	Dimension	dim_delivery_window	prep_and_fill_time	4	Type2	prep_and_fill_time			pharmakon.delivery_window	prep_and_fill_time						
+5	Dimension	dim_delivery_window	readjudicate_time	4	Type2	readjudicate_time			pharmakon.delivery_window	readjudicate_time						
+5	Dimension	dim_delivery_window	created_at	5	Event Timestamp	created timestamp			pharmakon.delivery_window	updated_at						
+5	Dimension	dim_delivery_window	is_active	5	Record Active	Active flag	Default 1	yes								
+5	Dimension	dim_delivery_window	expired_at	5	Record Expired	expired timestamp		yes								
+5	Fact	fact_delivery	fact_delivery_key	1	Primary Key	Unique internal id	identity									
+5	Fact	fact_delivery	dim_order_key	2	Foreign Key	FK	dim_order									
+5	Fact	fact_delivery	dim_cart_key	2	Foreign Key	FK	dim_cart									
+5	Fact	fact_delivery	dim_facility_key	2	Foreign Key	FK	dim_facility									
+5	Fact	fact_delivery	dim_account_key	2	Foreign Key	FK	dim_account									
+5	Fact	fact_delivery	dim_delivery_window_key	2	Foreign Key	FK	dim_delivery_window									
+5	Fact	fact_delivery	dim_delivery_address_key	2	Foreign Key	FK	dim_address									
+5	Fact	fact_delivery	is_doorman	4	Measures	is_doorman			pharmakon.capsule_core_deliveredaddress, pharmakon.capsule_core_deliveryaddress	is_doorman						
+5	Fact	fact_delivery	is_pickup	4	Measures	is_pickup	Calculated with etl	yes								
+5	Fact	fact_delivery	status	4	Measures	status			pharmakon.capsule_core_delivery	status						
+5	Fact	fact_delivery	failure_reason	4	Measures	failure_reason			pharmakon.capsule_core_delivery	failure_reason						
+5	Fact	fact_delivery	status_created_at	4	Measures	status_created_at			pharmakon.capsule_core_delivery	created_at						
+5	Fact	fact_delivery	status_active_at	4	Measures	status_active_at			pharmakon.capsule_core_delivery	status_active_at						
+5	Fact	fact_delivery	status_assigned_at	4	Measures	status_assigned_at			pharmakon.capsule_core_delivery	status_assigned_at						
+5	Fact	fact_delivery	status_completed_at	4	Measures	status_completed_at			pharmakon.capsule_core_delivery	status_completed_at						
+5	Fact	fact_delivery	status_failed_at	4	Measures	status_failed_at			pharmakon.capsule_core_delivery	status_failed_at						
+5	Fact	fact_delivery	is_delivered_early	4	Measures	is_delivered_early	Calculated with etl	yes								
+5	Fact	fact_delivery	minutes_early	4	Measures	minutes_early	Calculated with etl	yes								
+5	Fact	fact_delivery	is_delivered_late	4	Measures	is_delivered_late	Calculated with etl	yes								
+5	Fact	fact_delivery	minutes_late	4	Measures	minutes_late	Calculated with etl	yes								
+5	Fact	fact_delivery	on_time_customer	4	Measures	on_time_customer	Calculated with etl	yes								
+5	Fact	fact_delivery	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_delivery	updated_at						
+5	Fact	fact_delivery	is_active	5	Record Active	Active flag	Default 1	yes								
+5	Fact	fact_delivery	expired_at	5	Record Expired	expired timestamp		yes								
+5	Fact	fact_reschedule	fact_reschedule_key	1	Primary Key	Unique internal id	identity									
+5	Fact	fact_reschedule	dim_order_key	2	Foreign Key	FK	dim_order									
+5	Fact	fact_reschedule	dim_facility_key	2	Foreign Key	FK	dim_facility									
+5	Fact	fact_reschedule	dim_account_key	2	Foreign Key	FK	dim_account									
+5	Fact	fact_reschedule	reschedule_type	4	Measures	reschedule_type	Calculated with etl	yes								
+5	Fact	fact_reschedule	reschedule_detail	4	Measures	reschedule_detail			pharmakon.activity_log	detail						
+5	Fact	fact_reschedule	created_at	5	Event Timestamp	created timestamp			pharmakon.activity_log	timestamp						
+5	Fact	fact_reschedule	is_active	5	Record Active	Active flag	Default 1	yes								
+5	Fact	fact_reschedule	expired_at	5	Record Expired	expired timestamp		yes								
+6	Dimension	dim_patient	dim_patient_key	1	Primary Key	Unique internal id	identity									
+6	Dimension	dim_patient	dim_account_key	2	Foreign Key	FK	dim_account									
+6	Dimension	dim_patient	dim_facility_key	2	Foreign Key	FK	dim_facility									
+6	Dimension	dim_patient	pharmakon_patient_id	3	Natural Key	patient id			pharmakon.capsule_core_patient	id						
+6	Dimension	dim_patient	pioneer_person_id	4	Type2	pioneer_person_id			pharmakon.capsule_core_patient	pioneer_person_id						
+6	Dimension	dim_patient	patient_created_at	4	Type2	patient_created_at			pharmakon.capsule_core_patient	created_at						
+6	Dimension	dim_patient	first_name	4	Type2	first_name			pharmakon.capsule_core_patient	first_name						
+6	Dimension	dim_patient	last_name	4	Type2	last_name			pharmakon.capsule_core_patient	last_name						
+6	Dimension	dim_patient	is_primary	4	Type2	is_primary			pharmakon.capsule_core_patient	is_primary						
+6	Dimension	dim_patient	sex	4	Type2	sex			pharmakon.capsule_core_patient	sex						
+6	Dimension	dim_patient	birthdate	4	Type2	birthdate			pharmakon.capsule_core_patient	birthdate						
+6	Dimension	dim_patient	is_capsule_customer	4	Type2	is_capsule_customer		yes								
+6	Dimension	dim_patient	capsule_customer_at	4	Type2	capsule_customer_at		yes								
+6	Dimension	dim_patient	acquisition_source	4	Type2	acquisition_source		yes								
+6	Dimension	dim_patient	is_high_water_mark	4	Type2	is_high_water_mark		yes								
+6	Dimension	dim_patient	is_first_order_recurring	4	Type2	is_first_order_recurring		yes								
+6	Dimension	dim_patient	first_incoming_at	4	Type2	first_incoming_at		yes								
+6	Dimension	dim_patient	first_claimed_at	4	Type2	first_claimed_at		yes								
+6	Dimension	dim_patient	first_ordering_at	4	Type2	first_ordering_at		yes								
+6	Dimension	dim_patient	first_delivered_at	4	Type2	first_delivered_at		yes								
+6	Dimension	dim_patient	first_incoming_provider	4	Type2	first_incoming_provider		yes								
+6	Dimension	dim_patient	first_incoming_source	4	Type2	first_incoming_source		yes								
+6	Dimension	dim_patient	first_order_id	4	Type2	first_order_id		yes								
+6	Dimension	dim_patient	made_capsule_their_pharmacy_at	4	Type2	made_capsule_their_pharmacy_at		yes								
+6	Dimension	dim_patient	first_order_market	4	Type2	first_order_market		yes								
+6	Dimension	dim_patient	first_incoming_market	4	Type2	first_incoming_market		yes								
+6	Dimension	dim_patient	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_patient	created_at						
+6	Dimension	dim_patient	is_active	5	Record Active	Active flag	Default 1	yes								
+6	Dimension	dim_patient	expired_at	5	Record Expired	expired timestamp		yes								
+6	Dimension	dim_patient_medical_history	dim_patient_medical_history_key	1	Primary Key	Unique internal id	identity									
+6	Dimension	dim_patient_medical_history	dim_patient_key	2	Foreign Key	FK	dim_patient									
+6	Dimension	dim_patient_medical_history	pharmakon_patient_id	3	Natural Key	patient id			pharmakon.capsule_core_patient	id						
+6	Dimension	dim_patient_medical_history	allergy	4	Type2	allergies			pharmakon.capsule_core_patient	allergies						
+6	Dimension	dim_patient_medical_history	medical_condition	4	Type2	medical_conditions			pharmakon.capsule_core_patient	medical_conditions						
+6	Dimension	dim_patient_medical_history	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_patient	created_at						
+6	Dimension	dim_patient_medical_history	is_active	5	Record Active	Active flag	Default 1	yes								
+6	Dimension	dim_patient_medical_history	expired_at	5	Record Expired	expired timestamp		yes								
+6	Dimension	dim_user	dim_user_key	1	Primary Key	Unique internal id	identity									
+6	Dimension	dim_user	dim_facility_key	2	Foreign Key	FK	dim_facility									
+6	Dimension	dim_user	dim_patient_key	2	Foreign Key	FK	dim_patient									
+6	Dimension	dim_user	pharmakon_user_id	3	Natural Key	pharmakon_user_id			pharmakon.capsule_auth_user	id						
+6	Dimension	dim_user	email	4	Type2	email			pharmakon.capsule_auth_user	email						
+6	Dimension	dim_user	is_staff	4	Type2	is_staff			pharmakon.capsule_auth_user	is_staff						
+6	Dimension	dim_user	is_test	4	Type2	is_test			pharmakon.capsule_auth_user	is_test						
+6	Dimension	dim_user	pharmakon_is_active	4	Type2	pharmakon_is_active			pharmakon.capsule_auth_user	is_active						
+6	Dimension	dim_user	date_joined	4	Type2	date_joined			pharmakon.capsule_auth_user	date_joined						
+6	Dimension	dim_user	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_auth_user	created_at						
+6	Dimension	dim_user	is_active	5	Record Active	Active flag	Default 1	yes								
+6	Dimension	dim_user	expired_at	5	Record Expired	expired timestamp		yes								
+7	Fact	fact_escript	fact_prescription_key	1	Primary Key	Unique internal id	identity									
+7	Fact	fact_escript	fact_escript_key	1	Primary Key	Unique internal id	identity									
+7	Fact	fact_escript	dim_patient_medication_key	2	Foreign Key	FK	dim_patient_medication									
+7	Fact	fact_escript	dim_facility_key	2	Foreign Key	FK	dim_facility									
+7	Fact	fact_escript	dim_prescription_key	2	Foreign Key	FK	dim_prescription									
+7	Fact	fact_escript	dim_facility_key	2	Foreign Key	FK	dim_facility									
+7	Fact	fact_escript	dim_prescription_key	2	Foreign Key	FK	dim_prescription									
+7	Fact	fact_escript	pharmakon_escript_id	4	Measures	pharmakon_escript_id			pharmakon.capsule_core_escript	id						
+7	Fact	fact_escript	created_at	4	Measures	created_at			pharmakon.capsule_core_escript	created_at						
+7	Fact	fact_escript	status	4	Measures	status			pharmakon.capsule_core_escript	status						
+7	Fact	fact_escript	status_processing_at	4	Measures	status_processing_at			pharmakon.capsule_core_escript	status_processing_at						
+7	Fact	fact_escript	status_processed_at	4	Measures	status_processed_at			pharmakon.capsule_core_escript	status_processed_at						
+7	Fact	fact_escript	status_notifying_at	4	Measures	status_notifying_at			pharmakon.capsule_core_escript	status_notifying_at						
+7	Fact	fact_escript	status_completed_at	4	Measures	status_completed_at			pharmakon.capsule_core_escript	status_completed_at						
+7	Fact	fact_escript	status_completed_at	4	Measures	status_failed_at			pharmakon.capsule_core_escript	status_failed_at						
+7	Fact	fact_escript	first_escript_prescription_id	4	Measures	first_escript_prescription_id		yes								
+7	Fact	fact_escript	identity_id	4	Measures	identity_id			pharmakon.capsule_core_escript	identity_id						
+7	Fact	fact_escript	escript_task_completed_at	4	Measures	escript_task_completed_at		yes								
+7	Fact	fact_escript	manualreview_task_completed_at	4	Measures	manualreview_task_completed_at		yes								
+7	Fact	fact_escript	finalreview_task_completed_at	4	Measures	finalreview_task_completed_at		yes								
+7	Fact	fact_escript	latest_completion_at	4	Measures	latest_completion_at		yes								
+7	Fact	fact_escript	touch_time	4	Measures	touch_time		yes								
+7	Fact	fact_escript	touch_time_escript_only	4	Measures	touch_time_escript_only		yes								
+7	Fact	fact_escript	tat	4	Measures	tat		yes								
+7	Fact	fact_escript	is_work_hours	4	Measures	is_work_hours		yes								
+7	Fact	fact_escript	is_active	5	Record Active	Active flag	Default 1	yes								
+7	Fact	fact_escript	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_escript	updated_at						
+7	Fact	fact_escript	expired_at	5	Record Expired	expired timestamp		yes								
+9	Dimension	dim_control_schedule	dim_control_schedule_key	1	Primary Key	Unique internal id	identity									
+9	Dimension	dim_control_schedule	ndc	3	Natural Key	National drug code			pharmakon.capsule_core_controlschedule	ndc						
+9	Dimension	dim_control_schedule	fed_cs	4	Type2	fed_cs			pharmakon.capsule_core_controlschedule	fed_cs						
+9	Dimension	dim_control_schedule	state_cs	4	Type2	state_cs			pharmakon.capsule_core_controlschedule	state_cs						
+9	Dimension	dim_control_schedule	jurisdiction	4	Type2	jurisdiction			pharmakon.capsule_core_controlschedule	jurisdiction						
+9	Dimension	dim_control_schedule	state_cs_start_date	4	Type2	state_cs_start_date			pharmakon.capsule_core_controlschedule	state_cs_start_date						
+9	Dimension	dim_control_schedule	state_cs_end_date	4	Type2	state_cs_end_date			pharmakon.capsule_core_controlschedule	state_cs_end_date						
+9	Dimension	dim_control_schedule	fed_cs_start_date	4	Type2	fed_cs_start_date			pharmakon.capsule_core_controlschedule	fed_cs_start_date						
+9	Dimension	dim_control_schedule	fed_cs_end_date	4	Type2	fed_cs_end_date			pharmakon.capsule_core_controlschedule	fed_cs_end_date						
+9	Dimension	dim_control_schedule	is_active	5	Record Active	Active flag	Default 1	yes								
+9	Dimension	dim_control_schedule	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_controlschedule	updated_at						
+9	Dimension	dim_control_schedule	expired_at	5	Record Expired	expired timestamp		yes								
+9	Dimension	dim_medication	dim_medication_key	1	Primary Key	Unique internal id	identity									
+9	Dimension	dim_medication	dim_control_schedule_key	2	Foreign Key	FK	dim_control_schedule									
+9	Dimension	dim_medication	pharmakon_medication_id	3	Natural Key	id			pharmakon.capsule_core_medication	id						
+9	Dimension	dim_medication	ndc	4	Type2	NDC is back calculated by join	Refer to relationship tab		pharmakon.capsule_core_prescription	national_drug_code						
+9	Dimension	dim_medication	drug_name	4	Type2	primary_name			pharmakon.capsule_core_medication	primary_name						
+9	Dimension	dim_medication	brand_name	4	Type2	brand_name			pharmakon.capsule_core_medication	secondary_name						
+9	Dimension	dim_medication	dosage_form_label	4	Type2	dosage_form_label			pharmakon.capsule_core_medication	dosage_form_label						
+9	Dimension	dim_medication	strength	4	Type2	strength			pharmakon.capsule_core_medication	strength						
+9	Dimension	dim_medication	gcn	4	Type2	gcn			pharmakon.capsule_core_medication	gcn_seqno						
+9	Dimension	dim_medication	hicl	4	Type2	hicl			pharmakon.capsule_core_medication	hicl_seqno						
+9	Dimension	dim_medication	method_of_administration	4	Type2	method_of_administration			pharmakon.capsule_core_medication	gcrt_desc						
+9	Dimension	dim_medication	label_type	4	Type2	label_type	Calculated based on gni	yes								
+9	Dimension	dim_medication	mixing_type	4	Type2	mixing_type			pharmakon.capsule_core_medication	mixing_type						
+9	Dimension	dim_medication	refrigeration_type	4	Type2	refrigeration_type			pharmakon.capsule_core_medication	refrigeration_type						
+9	Dimension	dim_medication	is_active	5	Record Active	Active flag	Default 1	yes								
+9	Dimension	dim_medication	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_medication	updated_at						
+9	Dimension	dim_medication	expired_at	5	Record Expired	expired timestamp		yes								
+9	Dimension	dim_patient_medication	dim_patient_medication_key	1	Primary Key	Unique internal id	identity									
+9	Dimension	dim_patient_medication	dim_medication_key	2	Foreign Key	FK	dim_medication									
+9	Dimension	dim_patient_medication	dim_patient_key	2	Foreign Key	FK	dim_patient									
+9	Dimension	dim_patient_medication	standard_fill_size	4	Type2	standard_fill_size			pharmakon.capsule_core_patientmedication	standard_fill_size						
+9	Dimension	dim_patient_medication	is_active	5	Record Active	Active flag	Default 1	yes								
+9	Dimension	dim_patient_medication	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_patientmedication	updated_at						
+9	Dimension	dim_patient_medication	expired_at	5	Record Expired	expired timestamp		yes								
+10	Fact	fact_prescription	fact_prescription_key	1	Primary Key	Unique internal id	identity									
+10	Fact	fact_prescription	dim_patient_medication_key	2	Foreign Key	FK	dim_patient_medication									
+10	Fact	fact_prescription	dim_facility_key	2	Foreign Key	FK	dim_facility									
+10	Fact	fact_prescription	dim_prescription_key	2	Foreign Key	FK	dim_prescription									
+10	Fact	fact_prescription	dim_provider_key	2	Foreign Key	FK	dim_provider									
+10	Fact	fact_prescription	dispense_as_written	4	Measures	dispense_as_written			pharmakon.capsule_core_prescription	dispense_as_written						
+10	Fact	fact_prescription	dispenser_created_on	4	Measures	dispenser_created_on			pharmakon.capsule_core_prescription	dispenser_created_on						
+10	Fact	fact_prescription	rx_created_at	4	Measures	rx_created_at			pharmakon.capsule_core_prescription	created_at						
+10	Fact	fact_prescription	should_process_refill	4	Measures	should_process_refill			pharmakon.capsule_core_prescription	should_process_refill						
+10	Fact	fact_prescription	status	4	Measures	status			pharmakon.capsule_core_prescription	new_status						
+10	Fact	fact_prescription	dispenser_rx_number	4	Measures	dispenser_rx_number			pharmakon.capsule_core_prescription	dispenser_rx_number						
+10	Fact	fact_prescription	dispenser_status	4	Measures	dispenser_status			pharmakon.capsule_core_prescription	dispenser_status						
+10	Fact	fact_prescription	dispenser_origin_type	4	Measures	dispenser_origin_type			pharmakon.capsule_core_prescription	origin						
+10	Fact	fact_prescription	is_active	5	Record Active	Active flag	Default 1	yes								
+10	Fact	fact_prescription	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_prescription	updated_at						
+10	Fact	fact_prescription	expired_at	5	Record Expired	expired timestamp		yes								
+11	Fact	fact_prescription_fulfillment	fact_prescription_fulfillment_key	1	Primary Key	Unique internal id	identity									
+11	Fact	fact_prescription_fulfillment	dim_facility_key	2	Foreign Key	FK	dim_facility									
+11	Fact	fact_prescription_fulfillment	dim_order_key	2	Foreign Key	FK	dim_order									
+11	Fact	fact_prescription_fulfillment	dim_prescription_key	2	Foreign Key	FK	dim_prescription									
+11	Fact	fact_prescription_fulfillment	dim_sku_key	2	Foreign Key	FK	dim_sku									
+11	Fact	fact_prescription_fulfillment	calc	4	Measures	indicator for recent medication	Calculated with etl	yes								
+11	Fact	fact_prescription_fulfillment	daw	4	Measures	dispensed as written quantity	Calculated with etl	yes								
+11	Fact	fact_prescription_fulfillment	quantity_dispensed	4	Measures	quantity dispensed			pharmakon.capsule_core_prescriptionfulfillment	quantity_dispensed						
+11	Fact	fact_prescription_fulfillment	status	4	Measures	status of prescription			pharmakon.capsule_core_prescriptionfulfillment	status						
+11	Fact	fact_prescription_fulfillment	total_price_paid	4	Measures	total price paid for prescription			pharmakon.capsule_core_prescriptionfulfillment	total_price_paid						
+11	Fact	fact_prescription_fulfillment	total_price_submitted	4	Measures	total price sumbitted for prescription			pharmakon.capsule_core_prescriptionfulfillment	total_price_submitted						
+11	Fact	fact_prescription_fulfillment	created_at	5	Event Timestamp	created timestamp			pharmakon.capsule_core_prescriptionfulfillment	updated_at						
+11	Fact	fact_prescription_fulfillment	is_active	5	Record Active	Active flag	Default 1	yes								
+11	Fact	fact_prescription_fulfillment	expired_at	5	Record Expired	expired timestamp		yes								

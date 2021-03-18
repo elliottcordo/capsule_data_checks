@@ -1,0 +1,622 @@
+{
+    "grp_1": {
+        "dim_facility": {
+            "table_id": "dim_facility",
+            "target_dimension": "dim_facility",
+            "target_natural_keys": [
+                "facility_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.facility",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 0
+        },
+        "dim_market": {
+            "table_id": "dim_market",
+            "target_dimension": "dim_market",
+            "target_natural_keys": [
+                "market"
+            ],
+            "source_natural_keys": [
+                "name_external"
+            ],
+            "source_table": "pharmakon.market",
+            "source_timestamp": "max of created_at",
+            "dim_type": "dimension",
+            "grp": 0
+        },
+        "dim_address (practice billing)": {
+            "table_id": "dim_address (practice billing)",
+            "target_dimension": "dim_address",
+            "target_natural_keys": [
+                "city",
+                "state",
+                "street_one",
+                "zip"
+            ],
+            "source_natural_keys": [
+                "shipping_city",
+                "shipping_state",
+                "shipping_street",
+                "shipping_postal_code"
+            ],
+            "source_table": "salesforce.accounts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_address (practice shipping)": {
+            "table_id": "dim_address (practice shipping)",
+            "target_dimension": "dim_address",
+            "target_natural_keys": [
+                "city",
+                "state",
+                "street_one",
+                "zip"
+            ],
+            "source_natural_keys": [
+                "billing_city",
+                "billing_state",
+                "billing_street",
+                "billing_postal_code"
+            ],
+            "source_table": "salesforce.accounts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_address (provider)": {
+            "table_id": "dim_address (provider)",
+            "target_dimension": "dim_address",
+            "target_natural_keys": [
+                "city",
+                "state",
+                "street_one",
+                "street_two",
+                "zip"
+            ],
+            "source_natural_keys": [
+                "mailing_city",
+                "mailing_state",
+                "mailing_street",
+                "",
+                "mailing_postal_code"
+            ],
+            "source_table": "salesforce.contacts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_contact_method": {
+            "table_id": "dim_contact_method",
+            "target_dimension": "dim_contact_method",
+            "target_natural_keys": [
+                "method_name",
+                "method_type"
+            ],
+            "source_natural_keys": [
+                "type_of_communication_c",
+                "task_subtype"
+            ],
+            "source_table": "Salesforce.tasks",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_contact_type": {
+            "table_id": "dim_contact_type",
+            "target_dimension": "dim_contact_type",
+            "target_natural_keys": [
+                "contact_type",
+                "contact_name"
+            ],
+            "source_natural_keys": [
+                "Based on source name",
+                "Based on source name"
+            ],
+            "source_table": "Various",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_dpm": {
+            "table_id": "dim_dpm",
+            "target_dimension": "dim_dpm",
+            "target_natural_keys": [
+                "sf_owner_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "salesforce.users",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_dpm_goals": {
+            "table_id": "dim_dpm_goals",
+            "target_dimension": "dim_dpm_goals",
+            "target_natural_keys": [
+                "sf_owner_id",
+                "goal_to_date"
+            ],
+            "source_natural_keys": [
+                "id",
+                "period_start_date_c"
+            ],
+            "source_table": "salesforce.sales_goals",
+            "source_timestamp": "max of last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_practice": {
+            "table_id": "dim_practice",
+            "target_dimension": "dim_practice",
+            "target_natural_keys": [
+                "sf_account_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "salesforce.accounts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_provider": {
+            "table_id": "dim_provider",
+            "target_dimension": "dim_provider",
+            "target_natural_keys": [
+                "provider_npi"
+            ],
+            "source_natural_keys": [
+                "npi_c"
+            ],
+            "source_table": "salesforce.contacts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_provider_preference": {
+            "table_id": "dim_provider_preference",
+            "target_dimension": "dim_provider_preference",
+            "target_natural_keys": [
+                "provider_npi"
+            ],
+            "source_natural_keys": [
+                "npi_c"
+            ],
+            "source_table": "salesforce.contacts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "dim_territory": {
+            "table_id": "dim_territory",
+            "target_dimension": "dim_territory",
+            "target_natural_keys": [
+                "territory"
+            ],
+            "source_natural_keys": [
+                "x2019_territory_c"
+            ],
+            "source_table": "salesforce.contacts",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "dimension",
+            "grp": 1
+        },
+        "fact_provider": {
+            "table_id": "fact_provider",
+            "target_dimension": "fact_provider",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "max of created_at",
+            "dim_type": "fact",
+            "grp": 1
+        },
+        "fact_provider_comm": {
+            "table_id": "fact_provider_comm",
+            "target_dimension": "fact_provider_comm",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "last_modified_date",
+            "dim_type": "fact",
+            "grp": 1
+        }
+    },
+    "grp_2": {
+        "dim_invoice": {
+            "table_id": "dim_invoice",
+            "target_dimension": "dim_invoice",
+            "target_natural_keys": [
+                "invoice_number"
+            ],
+            "source_natural_keys": [
+                "invoicenumber"
+            ],
+            "source_table": "pioneer_realtime.iteminvoice",
+            "source_timestamp": "invoicedate",
+            "dim_type": "dimension",
+            "grp": 2
+        },
+        "dim_order": {
+            "table_id": "dim_order",
+            "target_dimension": "dim_order",
+            "target_natural_keys": [
+                "pharmakon_order_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_order",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 2
+        },
+        "dim_prescription": {
+            "table_id": "dim_prescription",
+            "target_dimension": "dim_prescription",
+            "target_natural_keys": [
+                "pharmakon_rx_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_prescription",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 2
+        },
+        "dim_sku": {
+            "table_id": "dim_sku",
+            "target_dimension": "dim_sku",
+            "target_natural_keys": [
+                "sku"
+            ],
+            "source_natural_keys": [
+                "uuid"
+            ],
+            "source_table": "JSON - Inventory - SkuCreated",
+            "source_timestamp": "max on changedonutc, event data",
+            "dim_type": "dimension",
+            "grp": 2
+        },
+        "dim_supplier": {
+            "table_id": "dim_supplier",
+            "target_dimension": "dim_supplier",
+            "target_natural_keys": [
+                "supplier_name"
+            ],
+            "source_natural_keys": [
+                "suppliername"
+            ],
+            "source_table": "pioneer_realtime.supplier",
+            "source_timestamp": "sysdate",
+            "dim_type": "dimension",
+            "grp": 2
+        },
+        "fact_inventory": {
+            "table_id": "fact_inventory",
+            "target_dimension": "fact_inventory",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "max on updated_at, event data",
+            "dim_type": "fact",
+            "grp": 2
+        },
+        "fact_inventory_order": {
+            "table_id": "fact_inventory_order",
+            "target_dimension": "fact_inventory_order",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "invoicedate",
+            "dim_type": "fact",
+            "grp": 2
+        }
+    },
+    "grp_3": {
+        "dim_account": {
+            "table_id": "dim_account",
+            "target_dimension": "dim_account",
+            "target_natural_keys": [
+                "pharmakon_user_uuid"
+            ],
+            "source_natural_keys": [
+                "user_uuid"
+            ],
+            "source_table": "pharmakon.capsule_core_account",
+            "source_timestamp": "created_at",
+            "dim_type": "dimension",
+            "grp": 3
+        },
+        "dim_address (fact cart)": {
+            "table_id": "dim_address (fact cart)",
+            "target_dimension": "dim_address",
+            "target_natural_keys": [
+                "city",
+                "state",
+                "street_one",
+                "street_two",
+                "zip"
+            ],
+            "source_natural_keys": [
+                "city",
+                "state",
+                "street",
+                "street_two",
+                "zip_code"
+            ],
+            "source_table": "pharmakon.capsule_core_deliveryaddress",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 3
+        },
+        "dim_cart": {
+            "table_id": "dim_cart",
+            "target_dimension": "dim_cart",
+            "target_natural_keys": [
+                "pharmakon_cart_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_cart",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 3
+        },
+        "dim_cart_item": {
+            "table_id": "dim_cart_item",
+            "target_dimension": "dim_cart_item",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 3
+        },
+        "fact_cart": {
+            "table_id": "fact_cart",
+            "target_dimension": "fact_cart",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "end_time",
+            "dim_type": "fact",
+            "grp": 3
+        }
+    },
+    "grp_4": {
+        "dim_order_item": {
+            "table_id": "dim_order_item",
+            "target_dimension": "dim_order_item",
+            "target_natural_keys": [
+                "__orderitem_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_orderitem",
+            "source_timestamp": "created_at",
+            "dim_type": "dimension",
+            "grp": 4
+        },
+        "fact_order": {
+            "table_id": "fact_order",
+            "target_dimension": "fact_order",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "fact",
+            "grp": 4
+        },
+        "fact_order_payment": {
+            "table_id": "fact_order_payment",
+            "target_dimension": "fact_order_payment",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "fact",
+            "grp": 4
+        },
+        "fact_order_snapshot": {
+            "table_id": "fact_order_snapshot",
+            "target_dimension": "fact_order_snapshot",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "",
+            "dim_type": "fact",
+            "grp": 4
+        }
+    },
+    "grp_5": {
+        "dim_address (fact delivery)": {
+            "table_id": "dim_address (fact delivery)",
+            "target_dimension": "dim_address",
+            "target_natural_keys": [
+                "city",
+                "state",
+                "street_one",
+                "street_two",
+                "zip"
+            ],
+            "source_natural_keys": [
+                "city",
+                "state",
+                "street",
+                "street_two",
+                "zip_code"
+            ],
+            "source_table": "pharmakon.capsule_core_deliveryaddress",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 5
+        },
+        "dim_delivery_window": {
+            "table_id": "dim_delivery_window",
+            "target_dimension": "dim_delivery_window",
+            "target_natural_keys": [
+                "end_at",
+                "start_at"
+            ],
+            "source_natural_keys": [
+                "end_time",
+                "start_time"
+            ],
+            "source_table": "pharmakon.delivery_window",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 5
+        },
+        "fact_delivery": {
+            "table_id": "fact_delivery",
+            "target_dimension": "fact_delivery",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "fact",
+            "grp": 5
+        },
+        "fact_reschedule": {
+            "table_id": "fact_reschedule",
+            "target_dimension": "fact_reschedule",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "timestamp",
+            "dim_type": "fact",
+            "grp": 5
+        }
+    },
+    "grp_6": {
+        "dim_patient": {
+            "table_id": "dim_patient",
+            "target_dimension": "dim_patient",
+            "target_natural_keys": [
+                "pharmakon_patient_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_patient",
+            "source_timestamp": "created_at",
+            "dim_type": "dimension",
+            "grp": 6
+        },
+        "dim_patient_medical_history": {
+            "table_id": "dim_patient_medical_history",
+            "target_dimension": "dim_patient_medical_history",
+            "target_natural_keys": [
+                "pharmakon_patient_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_patient",
+            "source_timestamp": "created_at",
+            "dim_type": "dimension",
+            "grp": 6
+        },
+        "dim_user": {
+            "table_id": "dim_user",
+            "target_dimension": "dim_user",
+            "target_natural_keys": [
+                "pharmakon_user_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_auth_user",
+            "source_timestamp": "created_at",
+            "dim_type": "dimension",
+            "grp": 6
+        }
+    },
+    "grp_7": {
+        "fact_escript": {
+            "table_id": "fact_escript",
+            "target_dimension": "fact_escript",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "fact",
+            "grp": 7
+        }
+    },
+    "grp_9": {
+        "dim_control_schedule": {
+            "table_id": "dim_control_schedule",
+            "target_dimension": "dim_control_schedule",
+            "target_natural_keys": [
+                "ndc"
+            ],
+            "source_natural_keys": [
+                "ndc"
+            ],
+            "source_table": "pharmakon.capsule_core_controlschedule",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 9
+        },
+        "dim_medication": {
+            "table_id": "dim_medication",
+            "target_dimension": "dim_medication",
+            "target_natural_keys": [
+                "pharmakon_medication_id"
+            ],
+            "source_natural_keys": [
+                "id"
+            ],
+            "source_table": "pharmakon.capsule_core_medication",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 9
+        },
+        "dim_patient_medication": {
+            "table_id": "dim_patient_medication",
+            "target_dimension": "dim_patient_medication",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "dimension",
+            "grp": 9
+        }
+    },
+    "grp_10": {
+        "fact_prescription": {
+            "table_id": "fact_prescription",
+            "target_dimension": "fact_prescription",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "fact",
+            "grp": 10
+        }
+    },
+    "grp_11": {
+        "fact_prescription_fulfillment": {
+            "table_id": "fact_prescription_fulfillment",
+            "target_dimension": "fact_prescription_fulfillment",
+            "target_natural_keys": [],
+            "source_natural_keys": [],
+            "source_table": "",
+            "source_timestamp": "updated_at",
+            "dim_type": "fact",
+            "grp": 11
+        }
+    }
+}

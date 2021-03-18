@@ -1,19 +1,24 @@
-# jenkins-template
+# Capsule EDW Data Quality Checks
 
-This repository contains the generic pipelines which can
-be used and extended by SWE applications. You'll want to
-check out [Creating a New Application](https://capsulerx.atlassian.net/wiki/spaces/devops/pages/1242955881/Creating+a+New+Application)
-for a better overview of how these pipelines fit into your application.
+This repository contains HAMB manifests that check Capsule EDW data qualities. 
+## How to run checks of existing manifests
 
-## Structure
+```python
+source hamb/bin/activate
+python -m hamb.module -m grp_1_missing_nk_check
+python -m hamb.module -m grp_1_duplicate_nk_check 
+```
 
-There's a README bundled with each pipeline that should
-give you a better idea how/when to use them.
+## How to generate manifests from templates
 
-For SWE:
-- [Generic Build and Deploy](.jenkins)
-- [PR tests](.jenkins/pr-tests)
+There are two templates available so far:
+1. missing_nk: missing natural keys compare to source
+2. duplicate_nk: duplicate natural keys check
 
-For SRE:
-- [Build](.jenkins/build)
-- [Deploy](.jenkins/deploy)
+It requires a parsed `data_config.json` file that is generated from `src/tsv_parser.py` which is parsing the data dictionary.
+
+To generate
+
+```python
+python generate_manifests.py
+```

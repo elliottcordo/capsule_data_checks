@@ -1,0 +1,8 @@
+default: # this would be the default handler if none specified
+  success:
+    - slack_handler: "bot_test"
+  warning:
+    - slack_handler: "bot_test"
+  failure:
+#      - jenkins_handler: "failed build"
+    - slack_handler: "bot_test"

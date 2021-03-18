@@ -1,0 +1,203 @@
+dpm_count:
+  label: "dpm_count"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT
+    *
+    FROM capsule_dw.v_dim_dpm dim
+    LEFT JOIN insights_views.sfdc_user_userinfo sfdc ON (dim.sf_owner_id = sfdc.user_id)
+    WHERE (dim.dpm_first_name || ' ' || dim.dpm_last_name) != sfdc.user_name;
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+  
+practice_names:
+  label: "practice_names"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT dim.sf_account_id, dim.account_name, sfdc.name, sfdc.last_modified_date
+    FROM capsule_dw.v_dim_practice dim 
+    LEFT JOIN salesforce.accounts sfdc ON (dim.sf_account_id = sfdc.id)
+    WHERE dim.account_name != sfdc.name
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+communication_level:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT dim.sf_account_id, dim.comm_level, sfdc.communication_preference_c, sfdc.last_modified_date
+    FROM capsule_dw.v_dim_practice dim 
+    LEFT JOIN salesforce.accounts sfdc ON (dim.sf_account_id = sfdc.id)
+    WHERE dim.comm_level != sfdc.communication_preference_c;
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+preferred_pharmacy:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT *
+    FROM capsule_dw.v_dim_provider dim
+    LEFT JOIN salesforce.contacts con ON (dim.sf_contact_id = con.id)
+    WHERE dim.capsule_preferred_pharmacy != con.capsule_opt_out_enrollment_c 
+    OR (dim.capsule_preferred_pharmacy IS NULL AND con.capsule_opt_out_enrollment_c IS NOT NULL)
+    OR (dim.capsule_preferred_pharmacy IS NOT NULL AND con.capsule_opt_out_enrollment_c IS NULL) 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+activation_date:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT *
+    FROM capsule_dw.v_dim_provider dim
+    LEFT JOIN salesforce.contacts con ON (dim.sf_contact_id = con.id)
+    WHERE dim.activation_day != con.activation_date_c 
+    OR (dim.activation_day IS NULL AND con.activation_date_c IS NOT NULL)
+    OR (dim.activation_day IS NOT NULL AND con.activation_date_c IS NULL)
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+provider_npi:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT *
+    FROM capsule_dw.v_dim_provider dim
+    LEFT JOIN salesforce.contacts con ON (dim.sf_contact_id = con.id)
+    WHERE dim.provider_npi != con.npi_c 
+    OR (dim.provider_npi IS NULL AND con.npi_c IS NOT NULL)
+    OR (dim.provider_npi IS NOT NULL AND con.npi_c IS NULL) 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+admin_primary_pref:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT *
+    FROM capsule_dw.v_dim_provider dim
+    LEFT JOIN salesforce.contacts con ON (dim.sf_contact_id = con.id)
+    WHERE dim.admin_pri_pref != con.admin_primary_pref_c
+    OR (dim.admin_pri_pref IS NULL AND con.admin_primary_pref_c IS NOT NULL)
+    OR (dim.admin_pri_pref IS NOT NULL AND con.admin_primary_pref_c IS NULL) 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+admin_primary_detail:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT *
+    FROM capsule_dw.v_dim_provider dim
+    LEFT JOIN salesforce.contacts con ON (dim.sf_contact_id = con.id)
+    WHERE dim.admin_pri_detail != con.admin_primary_detail_c
+    OR (dim.admin_pri_detail IS NULL AND con.admin_primary_detail_c IS NOT NULL)
+    OR (dim.admin_pri_detail IS NOT NULL AND con.admin_primary_detail_c IS NULL)
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+template:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+template:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+template:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+template:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101
+
+template:
+  label: "template"
+  type: "sql_comp_list"
+  conn_a: "capsule-dw"
+  script_a: >
+    SELECT 
+
+  conn_b: "capsule-dw"
+  script_b: "select 1 where 1=0;"
+  pct_diff: False
+  warning_threshold: 1
+  failure_threshold: 101

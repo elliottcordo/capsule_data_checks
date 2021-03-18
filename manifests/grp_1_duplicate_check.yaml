@@ -1,0 +1,177 @@
+dim_facility_duplicate_nk:
+    label: "dim_facility_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select facility_id, count(*)
+        from capsule_dw.v_dim_facility
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_market_duplicate_nk:
+    label: "dim_market_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select market, count(*)
+        from capsule_dw.v_dim_market
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_contact_method_duplicate_nk:
+    label: "dim_contact_method_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select coalesce(method_name::text, '')||coalesce(method_type::text, ''), count(*)
+        from capsule_dw.v_dim_contact_method
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_dpm_duplicate_nk:
+    label: "dim_dpm_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select sf_owner_id, count(*)
+        from capsule_dw.v_dim_dpm
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_dpm_goals_duplicate_nk:
+    label: "dim_dpm_goals_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select coalesce(__sf_sales_goals_id::text, '')||coalesce(goal_to_date::text, ''), count(*)
+        from capsule_dw.dim_dpm_goals
+        where is_active=true
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_practice_duplicate_nk:
+    label: "dim_practice_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select sf_account_id, count(*)
+        from capsule_dw.v_dim_practice
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_provider_duplicate_nk:
+    label: "dim_provider_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select provider_npi, count(*)
+        from capsule_dw.v_dim_provider
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_provider_preference_duplicate_nk:
+    label: "dim_provider_preference_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select dim_provider_key, count(*)
+        from capsule_dw.v_dim_provider_preference
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+dim_territory_duplicate_nk:
+    label: "dim_territory_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select territory, count(*)
+        from capsule_dw.v_dim_territory
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+fact_provider_duplicate_nk:
+    label: "fact_provider_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select fact_provider_key, count(*)
+        from capsule_dw.v_fact_provider
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+
+fact_provider_comm_duplicate_nk:
+    label: "fact_provider_comm_duplicate_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+
+        select fact_provider_comm_key, count(*)
+        from capsule_dw.v_fact_provider_comm
+        group by 1 having count(*)>1 order by 1 desc;
+
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0;"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 10
+

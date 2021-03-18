@@ -1,0 +1,55 @@
+# provider_source_to_targer:
+#     label: "provider source to target"
+#     type: "sql_comp"
+#     conn_a: "capsule-dw"
+#     script_a: "select count(1) from capsule_dw.dim_provider"
+#     conn_b: "capsule-dw"
+#     script_b: "select count(1) from pharmakon.capsule_core_provider"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 101
+
+# peters_query:
+#     label: "peters complex query"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: "scripts/peters_script.sql"
+#     conn_b: "capsule-dw"
+#     script_b: "select null"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 101
+
+dim_provider_missing_nk:
+    label: "dim_provider_missing_nk"
+    type: "sql_comp_list"
+    conn_a: "capsule-dw"
+    script_a: >
+        with source as (
+            select npi_c as npi
+            from salesforce.contacts
+            where last_modified_date < dateadd(HOUR, -12, convert_timezone('EST', getdate()))
+        ), dim as (
+            select distinct provider_npi
+            from capsule_dw.dim_provider
+        )
+        select source.*
+        from source
+        left join dim on npi=provider_npi
+        where npi is not null and provider_npi is null;
+    conn_b: "capsule-dw"
+    script_b: "select 1 where 1=0"
+    pct_diff: False
+    warning_threshold: 1
+    failure_threshold: 101
+
+# test_query: -- not working
+#     label: "peters complex query"
+#     type: "sql_comp_list"
+#     conn_a: "capsule-dw"
+#     script_a: "select npi_c as npi from salesforce.contacts where last_modified_date < dateadd(HOUR, -3, getdate())"
+#     conn_b: "capsule-dw"
+#     script_b: "select distinct provider_npi from capsule_dw.dim_provider"
+#     pct_diff: False
+#     warning_threshold: 1
+#     failure_threshold: 101
