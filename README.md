@@ -20,5 +20,7 @@ It requires a parsed `data_config.json` file that is generated from `src/tsv_par
 To generate
 
 ```python
-python generate_manifests.py
+python generate_manifests.py [missing_nk|duplicate_nk] -t [pick a group number from 1~10]
 ```
+
+> Some table might needs some modifications after a generation of manifests which has to be manually updated.
