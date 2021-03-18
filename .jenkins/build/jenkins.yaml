@@ -1,0 +1,15 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: build
+  namespace: jenkins
+spec:
+  containers:
+    - name: docker
+      resources:
+        requests:
+          cpu: 2
+          memory: 2Gi
+        limits:
+          cpu: 4
+          memory: 4Gi

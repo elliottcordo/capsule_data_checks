@@ -1,0 +1,57 @@
+@Library('pipeline-shared-library') _
+
+pipeline {
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '14'))
+    timeout(time: 30, unit: 'MINUTES')
+  }
+  agent {
+    kubernetes {
+      cloud 'eks-internal-cluster'
+      label k8s.formatJobLabel(env.JOB_NAME, env.BUILD_NUMBER)
+      yamlFile '.jenkins/build/jenkins.yaml'
+    }
+  }
+  parameters {
+    string(name: 'GIT_REPO', defaultValue: '', description: 'REQUIRED: The git repo to run this pipeline on.')
+    string(name: 'GIT_REVISION', defaultValue: '', description: 'REQUIRED: The git revision to build.')
+    string(name: 'DOCKERFILE', defaultValue: '', description: 'REQUIRED: The dockerfile to build')
+    string(name: 'APP_REPO', defaultValue: '', description: 'REQUIRED: The ECR repo to tag and push to')
+    string(name: 'TAGS', defaultValue: '', description: 'REQUIRED: The tags for the built image. Comma-separated list.')
+    string(name: 'BUILD_ARGS', defaultValue: '', description: 'OPTIONAL: The build args for the image. Comma-separated list.')
+    string(name: 'CACHE_FROM', defaultValue: '', description: 'OPTIONAL: Tags to use for docker layer caching. Comma-separated list.')
+  }
+  stages {
+    stage('Setup') {
+      steps {
+        // Checkout repo and git revision to jenkins directory
+        withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'jenkins-ssh', keyFileVariable: 'GITHUB_SSH_KEY')]) {
+          sh 'mkdir -p ~/.ssh'
+          sh 'ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts'
+          sh "cp ${env.GITHUB_SSH_KEY} ~/.ssh/id_rsa"
+        }
+        sh "git clone git@github.com:CapsuleHealth/${params.GIT_REPO}.git jenkins"
+        sh "cd jenkins && git checkout '${params.GIT_REVISION}'"
+
+        script {
+          helm.setup()
+        }
+      }
+    }
+    stage('Build Image') {
+      steps {
+        script {
+          dir('jenkins') {
+            ecr.build([
+              dockerfile: params.DOCKERFILE,
+              ecrRepo: params.APP_REPO,
+              tags: params.TAGS.split(','),
+              buildArgs: (params.BUILD_ARGS) ? params.BUILD_ARGS.split(',') : [],
+              cacheFrom: (params.CACHE_FROM) ? params.CACHE_FROM.split(',') : [],
+            ])
+          }
+        }
+      }
+    }
+  }
+}

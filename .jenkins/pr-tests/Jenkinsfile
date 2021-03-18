@@ -1,0 +1,68 @@
+@Library('pipeline-shared-library') _
+
+pipeline {
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '14'))
+    timeout(time: 30, unit: 'MINUTES')
+  }
+  agent {
+    kubernetes {
+      cloud 'eks-internal-cluster'
+      label k8s.formatJobLabel(env.JOB_NAME, env.BUILD_NUMBER)
+    }
+  }
+  stages {
+    stage('Setup') {
+      steps {
+        script {
+          generic.setup()
+        }
+      }
+    }
+    stage('Run tests') {
+      parallel {
+        stage('Infra tests') {
+          steps {
+            script {
+              pullRequest.createStatus('pending', 'infra-tests', 'running infra tests', env.RUN_DISPLAY_URL)
+              generic.test()
+            }
+          }
+          post {
+            failure {
+              script {
+                pullRequest.createStatus('failure', 'infra-tests', 'failed infra tests', env.RUN_DISPLAY_URL)
+              }
+            }
+            success {
+              script {
+                pullRequest.createStatus('success', 'infra-tests', 'passed infra tests', env.RUN_DISPLAY_URL)
+              }
+            }
+          }
+        }
+        stage('Application tests') {
+          steps {
+            script {
+              pullRequest.createStatus('pending', 'app-tests', 'running application tests', env.RUN_DISPLAY_URL)
+            }
+
+            echo "Your application should run tests here"
+          }
+          post {
+            failure {
+              script {
+                pullRequest.createStatus('failure', 'app-tests', 'failed application tests', env.RUN_DISPLAY_URL)
+              }
+            }
+            success {
+              script {
+                pullRequest.createStatus('success', 'app-tests', 'passed application tests', env.RUN_DISPLAY_URL)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

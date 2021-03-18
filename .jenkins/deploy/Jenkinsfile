@@ -1,0 +1,114 @@
+@Library('pipeline-shared-library') _
+
+pipeline {
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '14'))
+    timeout(time: 30, unit: 'MINUTES')
+  }
+  agent {
+    kubernetes {
+      cloud 'eks-internal-cluster'
+      label k8s.formatJobLabel(env.JOB_NAME, env.BUILD_NUMBER)
+    }
+  }
+  parameters {
+    string(name: 'APP_TAG', defaultValue: '', description: 'REQUIRED: The tag to deploy')
+    string(name: 'GIT_REPO', defaultValue: '', description: 'REQUIRED: The git repo to run this pipeline on.')
+    string(name: 'GIT_REVISION', defaultValue: '', description: 'REQUIRED: The git revision to deploy.')
+    string(name: 'DEPLOY_TARGET', defaultValue: '', description: 'OPTIONAL: The deploy target in our Prod AWS account')
+    string(name: 'PRE_PROD_DEPLOY_TARGET', defaultValue: '', description: 'OPTIONAL: The deploy target in our Pre-prod AWS account')
+  }
+  environment {
+    DEPLOY_TARGET = "${params.DEPLOY_TARGET}"
+    PRE_PROD_DEPLOY_TARGET = "${params.PRE_PROD_DEPLOY_TARGET}"
+    APP_TAG = "${params.APP_TAG}"
+    HELMFILE_VERSION = 'helmfile3'
+  }
+  stages {
+    stage('Setup') {
+      steps {
+        // Checkout repo and git revision to jenkins directory
+        withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'jenkins-ssh', keyFileVariable: 'GITHUB_SSH_KEY')]) {
+          sh 'mkdir -p ~/.ssh'
+          sh 'ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts'
+          sh "cp ${env.GITHUB_SSH_KEY} ~/.ssh/id_rsa"
+        }
+        sh "git clone git@github.com:CapsuleHealth/${params.GIT_REPO}.git jenkins"
+        sh "cd jenkins && git checkout '${params.GIT_REVISION}'"
+
+        script {
+          helm.setup()
+        }
+      }
+    }
+    stage('Deploy Prod Account') {
+      when {
+        allOf {
+          not {
+            environment(name: 'DEPLOY_TARGET', value: '')
+          }
+          expression {
+            fileExists("jenkins/helm/releases/${env.DEPLOY_TARGET}.yaml")
+          }
+        }
+      }
+      parallel {
+        stage('Deploy') {
+          steps {
+            script {
+              helm.deploy(helmfile: "jenkins/helm/releases/${env.DEPLOY_TARGET}.yaml")
+            }
+          }
+        }
+        stage('Track') {
+          steps {
+            script {
+              try {
+                helm.track(helmfile: "jenkins/helm/releases/${env.DEPLOY_TARGET}.yaml")
+              }
+              catch (Exception e) {
+                echo "tracking deployment failed"
+              }
+            }
+          }
+        }
+      }
+    }
+    stage('Deploy Pre-prod Account') {
+      when {
+        allOf {
+          not {
+            environment(name: 'PRE_PROD_DEPLOY_TARGET', value: '')
+          }
+          expression {
+            fileExists("jenkins/helm/releases/${env.PRE_PROD_DEPLOY_TARGET}.yaml")
+          }
+        }
+      }
+      environment {
+        ACCOUNT = 'pre-prod'
+      }
+      parallel {
+        stage('Deploy') {
+          steps {
+            script {
+              helm.deploy(helmfile: "jenkins/helm/releases/${env.PRE_PROD_DEPLOY_TARGET}.yaml")
+            }
+          }
+        }
+        stage('Track') {
+          steps {
+            script {
+              try {
+                helm.track(helmfile: "jenkins/helm/releases/${env.PRE_PROD_DEPLOY_TARGET}.yaml")
+              }
+              catch (Exception e) {
+                echo "tracking deployment failed"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

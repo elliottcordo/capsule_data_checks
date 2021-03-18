@@ -1,0 +1,45 @@
+@Library('pipeline-shared-library') _
+
+pipeline {
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '14'))
+    timeout(time: 30, unit: 'MINUTES')
+  }
+  agent {
+    kubernetes {
+      cloud 'eks-internal-cluster'
+      label k8s.formatJobLabel(env.JOB_NAME, env.BUILD_NUMBER)
+    }
+  }
+  stages {
+    stage('Setup') {
+      steps {
+        script {
+          generic.setup()
+        }
+      }
+    }
+    stage('Build') {
+      steps {
+        script {
+          generic.buildImage()
+        }
+      }
+    }
+    stage('Deploy') {
+      steps {
+        script {
+          generic.deploy()
+        }
+      }
+    }
+  }
+  post {
+    failure {
+      slackSend (channel: 'deploy-notifications', color: '#FF0000', message: "job: ${env.JOB_NAME}\nstatus: ${currentBuild.result}\nbranch: ${env.BRANCH_NAME}\nsha: ${env.GIT_COMMIT}\nauthor: ${env.GIT_AUTHOR}\ndetails: ${env.RUN_DISPLAY_URL}")
+    }
+    success {
+      slackSend (channel: 'deploy-notifications', color: '#00FF00', message: "job: ${env.JOB_NAME}\nstatus: ${currentBuild.result}\nbranch: ${env.BRANCH_NAME}\nsha: ${env.GIT_COMMIT}\nauthor: ${env.GIT_AUTHOR}\ndetails: ${env.RUN_DISPLAY_URL}")
+    }
+  }
+}
